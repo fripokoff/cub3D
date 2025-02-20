@@ -1,4 +1,4 @@
-#include "../includes/game.h"
+#include "../includes/cub3d.h"
 
 // static void rotate_left(t_game *game)
 // {

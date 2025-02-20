@@ -1,4 +1,4 @@
-#include "../includes/game.h"
+#include "../includes/cub3d.h"
 
 int DEBUG;
 
@@ -48,9 +48,9 @@ char **get_map(t_player *player)
     map[3] = "100000100000001";
     map[4] = "100000000000001";
     map[5] = "100000010000001";
-    map[6] = "100001000000001";
+    map[6] = "1000010000N0001";
     map[7] = "100000000000001";
-    map[8] = "1S0000000000001";
+    map[8] = "100000000000001";
     map[9] = "111111111111111";
     map[10] = NULL;
 	int player_count = 0;

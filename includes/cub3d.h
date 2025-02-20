@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef CUB3D_H
+#define CUB3D_H
 
 # define WIDTH 1280
 # define HEIGHT 720

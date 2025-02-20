@@ -1,4 +1,4 @@
-NAME = game 
+NAME = cub3D 
 CC = cc
 OBJ = $(SRC:.c=.o)
 
