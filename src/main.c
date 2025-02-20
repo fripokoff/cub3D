@@ -48,8 +48,8 @@ char **get_map(t_player *player)
     map[3] = "100000100000001";
     map[4] = "100000000000001";
     map[5] = "100000010000001";
-    map[6] = "1000010000N0001";
-    map[7] = "100000000000001";
+    map[6] = "100001000000001";
+    map[7] = "10000000001W001";
     map[8] = "100000000000001";
     map[9] = "111111111111111";
     map[10] = NULL;
@@ -66,6 +66,8 @@ char **get_map(t_player *player)
 			{
 				player->x = j * WALL_SIZE + WALL_SIZE / 2;
 				player->y = i * WALL_SIZE + WALL_SIZE / 2;
+				player->pos_x = j;
+				player->pos_y = i;
 				player_count++;
 			}
 			j++;
@@ -83,8 +85,8 @@ start position (N, S, E, W).\n");
 
 int init_game(t_game *game)
 {
-	init_player(&game->player);
 	game->map = get_map(&game->player);
+	init_player(game);
 	if(!game->map)
 		return 1;
 	game->mlx = mlx_init();

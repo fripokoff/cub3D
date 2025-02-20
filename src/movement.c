@@ -1,5 +1,6 @@
 #include "../includes/cub3d.h"
 
+
 // static void rotate_left(t_game *game)
 // {
 // 	double ang_speed;

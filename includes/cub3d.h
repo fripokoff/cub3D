@@ -15,7 +15,7 @@
 # define GREEN_HEX 0x00FF00
 # define WALL_SIZE 64
 # define PLAYER_SPEED 3
-# define PLAYER_ANG_SPEED = 0.1
+# define PLAYER_ANG_SPEED 0.1
 extern int DEBUG;
 
 #define PI 3.14159265359
@@ -31,8 +31,8 @@ typedef struct s_player
 {
     float x;
     float y;
-    float dir_x;
-    float dir_y;
+    float pos_x;
+    float pos_y;
     float angle;
     struct s_game *game;
     bool key_up;
@@ -58,7 +58,7 @@ typedef struct s_game
     char    **map;
 } t_game;
 
-void init_player(t_player *player);
+void init_player(t_game *player);
 int key_release(int keycode, t_player *player);
 int key_press(int keycode, t_player *player);
 bool touch(float px, float py, t_game *game);

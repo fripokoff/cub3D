@@ -1,16 +1,29 @@
 #include "../includes/cub3d.h"
 
-void init_player(t_player *player)
+void init_player(t_game *game)
 {
-	// player->x = WIDTH / 2;
-	// player->y = HEIGHT / 2;
-	player->angle = PI / 2;
-	player->key_up = false;
-	player->key_down = false;
-	player->key_left = false;
-	player->key_right = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
+	int player_x = game->player.pos_x;
+	int player_y = game->player.pos_y;
+	if(game->map[player_y][player_x] == 'N')
+	{
+		game->player.angle = 3 * PI/2;
+	}else if (game->map[player_y][player_x] == 'S')
+	{
+		game->player.angle = PI / 2;
+	}else if (game->map[player_y][player_x] == 'E')
+	{
+		game->player.angle = PI / 0;
+	}
+	else if (game->map[player_y][player_x] == 'W')
+	{
+		game->player.angle = PI / 1;
+	}
+	game->player.key_up = false;
+	game->player.key_down = false;
+	game->player.key_left = false;
+	game->player.key_right = false;
+	game->player.left_rotate = false;
+	game->player.right_rotate = false;
 }
 
 int key_press(int keycode, t_player *player)
