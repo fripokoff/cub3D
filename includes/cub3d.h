@@ -16,6 +16,9 @@
 # define WALL_SIZE 64
 # define PLAYER_SPEED 3
 # define PLAYER_ANG_SPEED 0.1
+#define FOV (PI / 3)
+#define RAY_STEP 0.5
+#define MAX_RENDER_DISTANCE (WALL_SIZE * 8)
 extern int DEBUG;
 
 #define PI 3.14159265359

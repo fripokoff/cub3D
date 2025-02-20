@@ -41,18 +41,18 @@ void draw_map(t_game *game)
 char **get_map(t_player *player)
 {
 	int map_size = 11;
-    char **map = malloc(sizeof(char *) * map_size);
-    map[0] = "111111111111111";
-    map[1] = "100000000000001";
-    map[2] = "100000000000001";
-    map[3] = "100000100000001";
-    map[4] = "100000000000001";
-    map[5] = "100000010000001";
-    map[6] = "100001000000001";
-    map[7] = "10000000001W001";
-    map[8] = "100000000000001";
-    map[9] = "111111111111111";
-    map[10] = NULL;
+	char **map = malloc(sizeof(char *) * map_size);
+	map[0] = "111111111111111";
+	map[1] = "100000000000001";
+	map[2] = "100000000000001";
+	map[3] = "100000100000001";
+	map[4] = "100000000000001";
+	map[5] = "100000010000001";
+	map[6] = "100001000000001";
+	map[7] = "10000000001S001";
+	map[8] = "100000000000001";
+	map[9] = "111111111111111";
+	map[10] = NULL;
 	int player_count = 0;
 	int i = 0;
 	int j = 0;
@@ -80,7 +80,7 @@ char **get_map(t_player *player)
 start position (N, S, E, W).\n");
 		return (NULL);
 	}
-    return (map);
+	return (map);
 }
 
 int init_game(t_game *game)
@@ -105,7 +105,7 @@ bool touch(float px, float py, t_game *game)
 	int y = py / WALL_SIZE;
 	
 	if(x < 0 || y < 0 || x >= strlen(game->map[0]) || y >= 10)
-        return true;
+		return true;
 	if(game->map[y][x] == '1')
 		return true;
 	return false;
@@ -130,7 +130,13 @@ float fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
 	float delta_x = x2 - x1;
 	float delta_y = y2 - y1;
 	float angle = atan2(delta_y, delta_x) - game->player.angle;
-	float fix_dist = distance(delta_x, delta_y) * cos(angle);
+	/* Correction fisheye */
+	float dist = sqrt(delta_x * delta_x + delta_y * delta_y);
+	float fix_dist = dist * cos(angle);
+	/* Normaliser angle */
+	angle = fmod(angle + 2 * PI, 2 * PI);
+	if (angle > PI)
+		angle -= 2 * PI;
 	return fix_dist;
 }
 
@@ -139,24 +145,35 @@ void draw_line(t_player *player, t_game *game, float start_x, int i)
 {
 	float cos_angle = cos(start_x);
 	float sin_angle = sin(start_x);
-	float ray_x  = player->x;
+	float ray_x = player->x;
 	float ray_y = player->y;
-	while(!touch(ray_x, ray_y, game))
+	float ray_step = 0.5;
+
+	while (!touch(ray_x, ray_y, game))
 	{
-		if(DEBUG)
+		if (DEBUG)
 			put_pixel(ray_x, ray_y, 0x0000FF, game);
-		ray_x += cos_angle;
-		ray_y += sin_angle;
+		ray_x += cos_angle * ray_step;
+		ray_y += sin_angle * ray_step;
 	}
 	if(!DEBUG)
 	{
+		int brightness = false;
 		float dist = fixed_dist(player->x, player->y, ray_x, ray_y, game);
-		float height = (WALL_SIZE / dist) * (WIDTH / 2);
+		float height = (WALL_SIZE * HEIGHT) / dist;
+		height = fmin(height, HEIGHT * 2);
 		int start_y = (HEIGHT - height) / 2;
 		int end = start_y + height;
-		while(start_y < end)
+		start_y = fmax(0, start_y);
+		end = fmin(HEIGHT - 1, end);
+		int color_value = (int)(255 * (1.0 - fmin(dist / (WALL_SIZE * 8), 1.0)));
+		if (!brightness)
+			color_value = 255;
+		color_value = fmin(255, fmax(0, color_value));
+		int color = color_value;
+		while (start_y <= end)
 		{
-			put_pixel(i, start_y, 255, game);
+			put_pixel(i, start_y, color, game);
 			start_y++;
 		}
 	}

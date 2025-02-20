@@ -12,11 +12,11 @@ void init_player(t_game *game)
 		game->player.angle = PI / 2;
 	}else if (game->map[player_y][player_x] == 'E')
 	{
-		game->player.angle = PI / 0;
+		game->player.angle = 0;
 	}
 	else if (game->map[player_y][player_x] == 'W')
 	{
-		game->player.angle = PI / 1;
+		game->player.angle = PI;
 	}
 	game->player.key_up = false;
 	game->player.key_down = false;
