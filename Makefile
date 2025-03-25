@@ -33,7 +33,7 @@ clean:
 	fi
 
 norm:
-	norminette includes/cub3d
+	norminette includes/cub3d.h
 	norminette src/*
 
 fclean: clean
