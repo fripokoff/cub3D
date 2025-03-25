@@ -1,10 +1,11 @@
 NAME = cub3D 
 CC = cc
+CFLAGS = -Wall -Wextra -Werror
 OBJ = $(SRC:.c=.o)
 
 LFLAGS = -L./includes/mlx -lmlx -lXext -lX11 -lm -lz
 INCLUDES = includes/mlx/libmlx.a
-SRC = src/main.c src/player.c src/movement.c
+SRC = src/main.c src/player.c src/movement.c src/init.c src/utils.c src/ray_casting.c src/env_render.c
 
 all: mlx $(NAME)
 
@@ -17,7 +18,7 @@ mlx:
 	fi
 
 $(NAME): $(OBJ)
-	$(CC) $(SRC) -o $(NAME) $(INCLUDES) $(LFLAGS)
+	$(CC) $(CFLAGS) $(SRC) -o $(NAME) $(INCLUDES) $(LFLAGS)
 
 clean:
 	rm -rf $(OBJ)
