@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 10:17:41 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:29:58 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	init_player(t_game *game)
 {
@@ -66,5 +66,31 @@ int	key_release(int keycode, t_player *player)
 		player->left_rotate = false;
 	if (keycode == RIGHT)
 		player->right_rotate = false;
+	return (0);
+}
+
+bool	touch(float px, float py, t_game *game)
+{
+	int	x;
+	int	y;
+
+	x = px / WALL_SIZE;
+	y = py / WALL_SIZE;
+	if (x < 0 || y < 0 || x >= (int)strlen(game->map[0]) || y >= 10)
+		return (true);
+	if (game->map[y][x] == '1')
+		return (true);
+	return (false);
+}
+
+int	check_fov_and_init(t_game *game, int debug_choosed_map)
+{
+	if (FOV > 90 || FOV < 45)
+	{
+		printf("Error\nFOV must be between 45 and 90 degrees.\n");
+		return (1);
+	}
+	if (setup_game_environment(game, debug_choosed_map) == 1)
+		return (1);
 	return (0);
 }

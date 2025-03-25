@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 11:11:50 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:20:02 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 void	cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 	float *ray_coords)

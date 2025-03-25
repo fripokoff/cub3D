@@ -5,7 +5,13 @@ OBJ = $(SRC:.c=.o)
 
 LFLAGS = -L./includes/mlx -lmlx -lXext -lX11 -lm -lz
 INCLUDES = includes/mlx/libmlx.a
-SRC = src/main.c src/player.c src/movement.c src/init.c src/utils.c src/ray_casting.c src/env_render.c
+SRC = src/main.c \
+		src/player/player.c \
+		src/player/movement.c \
+		src/ray/ray_casting.c \
+		src/ray/env_render.c \
+		src/ray/ray_utils.c \
+		src/map/init.c \
 
 all: mlx $(NAME)
 

@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 10:42:32 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:19:51 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static void	player_rotate(t_player *player)
 {

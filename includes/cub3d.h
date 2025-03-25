@@ -83,6 +83,7 @@ typedef struct s_wall_column
 } t_wall_column;
 
 void init_player(t_game *player);
+int	check_fov_and_init(t_game *game, int debug_choosed_map);
 int key_release(int keycode, t_player *player);
 int key_press(int keycode, t_player *player);
 bool touch(float px, float py, t_game *game);
@@ -90,7 +91,7 @@ void move_player(t_player *player);
 int load_texture(t_game *game, t_texture *text, char *path);
 void put_pixel(int x, int y, int color, t_game *game);
 int get_texture_pixel(t_texture *text, int x, int y);
-int	setup_game_environment(t_game *game);
+int	setup_game_environment(t_game *game, int debug_choosed_map);
 int	focus_out(t_player *player);
 int	render_game_frame(t_game *game);
 float	get_precise_wall_hit(float ray[2], float old_ray[2], t_game *game);

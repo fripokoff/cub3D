@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 10:21:30 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:30:00 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 static char	**initialize_game_map(t_player *player)
 {
@@ -63,57 +63,69 @@ start position (N, S, E, W).\n");
 	return (map);
 }
 
-int	setup_game_environment(t_game *game)
+static int	init_mlx_components(t_game *game)
 {
-	// Initialiser MLX en premier
 	game->mlx = mlx_init();
 	if (!game->mlx)
-	{
-		printf("Error: mlx initialization failed\n");
-		return (1);
-	}
-	// Initialiser la map et le joueur
-	game->map = initialize_game_map(&game->player);
-	if (!game->map)
-	{
-		printf("Error: map initialization failed\n");
-		return (1);
-	}
-	init_player(game);
-	// Charger les textures
+		return (printf("Error: mlx initialization failed\n"), 1);
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cubi");
+	if (!game->win)
+		return (printf("Error: window creation failed\n"), 1);
+	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	if (!game->img)
+		return (printf("Error: image creation failed\n"), 1);
+	game->data = mlx_get_data_addr(game->img, &game->bpp,
+			&game->size_line, &game->endian);
+	if (!game->data)
+		return (printf("Error: getting image data failed\n"), 1);
+	return (0);
+}
+
+static int	load_cardinal_textures(t_game *game)
+{
 	if (load_texture(game, &game->textures[0], "textures/cardinal/NO.xpm")
 		|| load_texture(game, &game->textures[1], "textures/cardinal/SO.xpm")
 		|| load_texture(game, &game->textures[2], "textures/cardinal/EA.xpm")
 		|| load_texture(game, &game->textures[3], "textures/cardinal/WE.xpm"))
-	// if (load_texture(game, &game->textures[0], "textures/wolf/wood.xpm")
-	// 	|| load_texture(game, &game->textures[1], "textures/wolf/red_brick.xpm")
-	// 	|| load_texture(game, &game->textures[2], "textures/wolf/grey_stone.xpm")
-	// 	|| load_texture(game, &game->textures[3], "textures/wolf/purple_stone.xpm"))
 	{
-		printf("Error: loading textures failed\n");
+		printf("Error: loading cardinal textures failed\n");
 		return (1);
 	}
-	// Créer la fenêtre
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cubi");
-	if (!game->win)
+	return (0);
+}
+
+static int	load_wolf_textures(t_game *game)
+{
+	if (load_texture(game, &game->textures[0], "textures/wolf/wood.xpm")
+		|| load_texture(game, &game->textures[1], "textures/wolf/red_brick.xpm")
+		|| load_texture(game, &game->textures[2],
+			"textures/wolf/grey_stone.xpm")
+		|| load_texture(game, &game->textures[3],
+			"textures/wolf/purple_stone.xpm"))
 	{
-		printf("Error: window creation failed\n");
+		printf("Error: loading wolf textures failed\n");
 		return (1);
 	}
-	// Créer l'image
-	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
-	if (!game->img)
-	{
-		printf("Error: image creation failed\n");
+	return (0);
+}
+
+int	setup_game_environment(t_game *game, int debug_choosed_map)
+{
+	if (init_mlx_components(game))
 		return (1);
+	game->map = initialize_game_map(&game->player);
+	if (!game->map)
+		return (printf("Error: map initialization failed\n"), 1);
+	init_player(game);
+	if (debug_choosed_map)
+	{
+		if (load_wolf_textures(game))
+			return (1);
 	}
-	// Obtenir l'adresse des données de l'image
-	game->data = mlx_get_data_addr(game->img, &game->bpp,
-			&game->size_line, &game->endian);
-	if (!game->data)
+	else
 	{
-		printf("Error: getting image data failed\n");
-		return (1);
+		if (load_cardinal_textures(game))
+			return (1);
 	}
 	game->player.game = game;
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);

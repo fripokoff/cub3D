@@ -10,5 +10,12 @@ make
 ```
 ### Run the program
 ```bash
-./game
+./cub3D
+```
+
+### Choose map
+### - Cardinal map = 0;
+### - Wolf map = 0;
+```bash
+./cub3D 0
 ```

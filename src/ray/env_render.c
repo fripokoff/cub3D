@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 11:19:39 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:26:03 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 int	render_game_frame(t_game *game)
 {
@@ -65,6 +65,7 @@ void	render_environment(t_game *game, int floor_color, int ceiling_color)
 		y++;
 	}
 }
+
 int	load_texture(t_game *game, t_texture *text, char *path)
 {
 	text->img = mlx_xpm_file_to_image(game->mlx, path,

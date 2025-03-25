@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:08 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 11:22:21 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:31:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,6 @@ void	clear_image(t_game *game)
 	}
 }
 
-int	check_fov_and_init(t_game *game)
-{
-	if (FOV > 90 || FOV < 45)
-	{
-		printf("Error\nFOV must be between 45 and 90 degrees.\n");
-		return (1);
-	}
-	if (setup_game_environment(game) == 1)
-		return (1);
-	return (0);
-}
-
 int	setup_hooks(t_game *game)
 {
 	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
@@ -66,10 +54,14 @@ int	setup_hooks(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	game;
+	int choosed_map;
 
 	(void)ac;
 	(void)av;
-	if (check_fov_and_init(&game) == 1)
+	choosed_map = 0;
+	if (av[1])
+		choosed_map = atoi(av[1]);
+	if (check_fov_and_init(&game, choosed_map) == 1)
 		return (1);
 	setup_hooks(&game);
 	mlx_loop(game.mlx);

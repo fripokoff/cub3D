@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ray_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:22 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 11:22:14 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:25:52 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
 float	fixed_dist(t_player *player, float ray[2], t_game *game)
 {
@@ -62,18 +62,4 @@ float	get_precise_wall_hit(float ray[2], float old_ray[2], t_game *game)
 		step *= 0.5;
 	}
 	return (t);
-}
-
-bool	touch(float px, float py, t_game *game)
-{
-	int	x;
-	int	y;
-
-	x = px / WALL_SIZE;
-	y = py / WALL_SIZE;
-	if (x < 0 || y < 0 || x >= (int)strlen(game->map[0]) || y >= 10)
-		return (true);
-	if (game->map[y][x] == '1')
-		return (true);
-	return (false);
 }
