@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:08 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:31:37 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:37:27 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	setup_hooks(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	game;
-	int choosed_map;
+	int		choosed_map;
 
 	(void)ac;
 	(void)av;

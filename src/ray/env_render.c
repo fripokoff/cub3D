@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:26:03 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:37:07 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	render_game_frame(t_game *game)
 	return (0);
 }
 
-void	render_environment(t_game *game, int floor_color, int ceiling_color)
+static void	render_environment(t_game *game, int floor_color, int ceiling_color)
 {
 	int	y;
 	int	x;

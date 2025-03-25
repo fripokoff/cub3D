@@ -32,6 +32,10 @@ clean:
 		make clean -C ./includes/mlx; \
 	fi
 
+norm:
+	norminette includes/cub3d
+	norminette src/*
+
 fclean: clean
 	rm -rf $(NAME)
 

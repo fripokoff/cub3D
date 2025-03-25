@@ -6,13 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:20:02 by kpires           ###   ########.fr       */
+/*   Updated: 2025/03/25 12:51:45 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-void	cast_ray_to_wall(t_player *player, t_game *game, float *angles,
+static void	cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 	float *ray_coords)
 {
 	float	ray[2];
@@ -35,7 +35,7 @@ void	cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 	ray_coords[1] = lerp(old_ray[1], ray[1], hit_point);
 }
 
-void	select_wall_texture(float ray_coords[2], float angles[2],
+static void	select_wall_texture(float ray_coords[2], float angles[2],
 	bool hit_vertical, t_wall_column *wall)
 {
 	if (hit_vertical)
@@ -60,7 +60,7 @@ void	select_wall_texture(float ray_coords[2], float angles[2],
 	}
 }
 
-void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
+static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
 	float *wall_height)
 {
 	*wall_height = (WALL_SIZE * HEIGHT) / dist;
@@ -72,7 +72,7 @@ void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
 		*draw_end = HEIGHT - 1;
 }
 
-void	render_textured_wall_column(t_game *game, t_wall_column *wall)
+static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 {
 	float	step;
 	float	tex_pos;
