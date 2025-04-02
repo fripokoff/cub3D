@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 01:03:32 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 01:16:10 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_texture
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	char	*path;
 }	t_texture;
 
 typedef struct s_map
@@ -122,11 +123,13 @@ typedef struct s_wall_column
 }	t_wall_column;
 
 /* INIT */
-int		setup_game_environment(t_game *game, int choosed_texture, int choosed_size_map);
+int		setup_game_environment(t_game *game, int choosed_texture,
+			int choosed_size_map);
 
 /* PLAYER & MOVEMENTS */
 void	init_player(t_game *player);
-int		check_fov_and_init(t_game *game, int choosed_texture, int choosed_size_map);
+int		check_fov_and_init(t_game *game, int choosed_texture,
+			int choosed_size_map);
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
 bool	touch(float px, float py, t_game *game);
@@ -134,8 +137,8 @@ void	move_player(t_player *player);
 int		focus_out(t_player *player);
 
 /* RENDER */
-int		load_texture(t_game *game, t_texture *text, char *path);
-int		get_texture_pixel(t_texture *text, int x, int y);
+int		load_texture(t_game *game, t_texture *texture, char *path);
+int		get_texture_pixel(t_texture *texture, int x, int y);
 int		render_game_frame(t_game *game);
 
 /* RAY */

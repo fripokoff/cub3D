@@ -6,13 +6,13 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 01:03:12 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 01:16:28 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static void render_floor(t_game *game)
+static void	render_floor(t_game *game)
 {
 	int		y;
 	int		x;
@@ -38,7 +38,7 @@ static void	render_ceiling(t_game *game)
 	int		y;
 	int		x;
 	int		ceiling_color;
-	
+
 	ceiling_color = rgb_to_int(game->map.ceiling_color[0],
 			game->map.ceiling_color[1], game->map.ceiling_color[2]);
 	y = 0;
@@ -80,24 +80,24 @@ int	render_game_frame(t_game *game)
 	return (0);
 }
 
-int	load_texture(t_game *game, t_texture *text, char *path)
+int	load_texture(t_game *game, t_texture *texture, char *path)
 {
-	text->img = mlx_xpm_file_to_image(game->mlx, path,
-			&text->width, &text->height);
-	if (!text->img)
+	texture->img = mlx_xpm_file_to_image(game->mlx, path,
+			&texture->width, &texture->height);
+	if (!texture->img)
 		return (1);
-	text->addr = mlx_get_data_addr(text->img, &text->bits_per_pixel,
-			&text->line_length, &text->endian);
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel,
+			&texture->line_length, &texture->endian);
 	return (0);
 }
 
-int	get_texture_pixel(t_texture *text, int x, int y)
+int	get_texture_pixel(t_texture *texture, int x, int y)
 {
 	char	*pixel;
 
-	if (x < 0 || x >= text->width || y < 0 || y >= text->height)
+	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
 		return (0);
-	pixel = text->addr + (y * text->line_length
-			+ x * (text->bits_per_pixel / 8));
+	pixel = texture->addr + (y * texture->line_length
+			+ x * (texture->bits_per_pixel / 8));
 	return (*(unsigned int *)pixel);
 }
