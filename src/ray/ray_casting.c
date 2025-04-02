@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 23:57:57 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 00:38:08 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 		color = get_texture_pixel(&game->map.textures[wall->tex_id],
 				(int)(wall->wall_x * game->map.textures[wall->tex_id].width),
 				tex_y);
-		put_pixel(wall->column_id, y, color, game);
+		put_pixel(wall->screen_x, y, color, game);
 		y++;
 	}
 }
@@ -86,7 +86,7 @@ void	render_wall_column(t_player *player, t_game *game, float start_x, int i)
 	dist = fixed_dist(player, ray_coords);
 	hit_vertical = fabs(fmod(ray_coords[0], WALL_SIZE)) < 0.0001f
 		|| fabs(fmod(ray_coords[0], WALL_SIZE) - WALL_SIZE) < 0.0001f;
-	wall.column_id = i;
+	wall.screen_x = i;
 	select_wall_texture(ray_coords, angles,
 		hit_vertical, &wall);
 	compute_wall_dimensions(dist, &wall.draw_start, &wall.draw_end,

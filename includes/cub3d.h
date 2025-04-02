@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 00:08:05 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 00:45:44 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum e_game_settings
 	HEIGHT = 720,
 	WALL_SIZE = 64,
 	PLAYER_SPEED = 5,
-	PLAYER_ROT_SPEED = 2,
+	PLAYER_ROT_SPEED = 4,
 	FOV = 60,
 	FOCUS_OUT = 10
 }	t_game_settings;
@@ -111,12 +111,12 @@ typedef struct s_game
 
 typedef struct s_wall_column
 {
-	int		column_id;// position x dans l'écran
-	float	wall_x;// position x sur la texture
-	int		tex_id;// identifiant de la texture
-	float	wall_height;// hauteur du mur
-	int		draw_start;// début du rendu vertical
-	int		draw_end;// fin du rendu vertical
+	int		screen_x;
+	double	wall_x;
+	int		tex_id;
+	float	wall_height;
+	int		draw_start;
+	int		draw_end;
 }	t_wall_column;
 
 /* INIT */

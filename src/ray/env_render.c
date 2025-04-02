@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 23:38:41 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 00:37:52 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	render_environment(t_game *game, int floor_color, int ceiling_color)
 
 int	render_game_frame(t_game *game)
 {
-	int			i;
+	int			screen_x;
 	float		camera_x;
 	float		ray_angle;
 	t_player	*player;
@@ -53,14 +53,14 @@ int	render_game_frame(t_game *game)
 	move_player(player);
 	clear_image(game);
 	render_environment(game, rgb_to_int(220, 100, 0), rgb_to_int(225, 30, 0));
-	i = 0;
+	screen_x = 0;
 	fov = FOV * PI / 180.0;
-	while (i < WIDTH)
+	while (screen_x < WIDTH)
 	{
-		camera_x = 2 * i / (float)WIDTH - 1;
+		camera_x = 2 * screen_x / (float)WIDTH - 1;
 		ray_angle = player->angle + atan(camera_x * tan(fov / 2));
-		render_wall_column(player, game, ray_angle, i);
-		i++;
+		render_wall_column(player, game, ray_angle, screen_x);
+		screen_x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
