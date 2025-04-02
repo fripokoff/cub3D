@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 23:57:23 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 01:05:29 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,33 +150,30 @@ static char	**create_very_small_map(void)
 	return (map);
 }
 
-static char	**initialize_game_map(t_game *game)
+static char	**initialize_game_map(t_game *game, int choosed_size_map)
 {
 	t_player	*player;
 	char		**map;
 	int			player_count;
 	int			i;
 	int			j;
-	int		map_select;
 
-	map_select = 0;
 	player = &game->player;
-	if (map_select == 0)
-	{
-		map = create_small_map();
-		if (!map)
-			return (NULL);
-		game->map.width = 10;
-		game->map.height = 10;
-	}else if (map_select == 1)
+	if (choosed_size_map == 1)
 	{
 		map = create_very_small_map();
 		if (!map)
 			return (NULL);
 		game->map.width = 3;
 		game->map.height = 3;
-	}
-	else if (map_select == 2)
+	}else if (choosed_size_map == 0)
+	{
+		map = create_small_map();
+		if (!map)
+			return (NULL);
+		game->map.width = 10;
+		game->map.height = 10;
+	} else if (choosed_size_map == 2)
 	{
 		game->map.width = 100;
 		game->map.height = 100;
@@ -264,20 +261,26 @@ static int	load_wolf_textures(t_game *game)
 	return (0);
 }
 
-int	setup_game_environment(t_game *game, int debug_choosed_map)
+int	setup_game_environment(t_game *game, int choosed_texture, int choosed_size_map)
 {
 	if (init_mlx_components(game))
 		return (1);
-	game->map.map = initialize_game_map(game);
+	game->map.map = initialize_game_map(game, choosed_size_map);
 	if (!game->map.map)
 		return (printf("Error: map initialization failed\n"), 1);
 	init_player(game);
-	if (debug_choosed_map)
+	game->map.floor_color[0] = 220;
+	game->map.floor_color[1] = 100;
+	game->map.floor_color[2] = 0;
+	game->map.ceiling_color[0] = 225;
+	game->map.ceiling_color[1] = 30;
+	game->map.ceiling_color[2] = 0;
+	if (choosed_texture == 0)
 	{
 		if (load_wolf_textures(game))
 			return (1);
 	}
-	else
+	else if (choosed_texture == 1)
 	{
 		if (load_cardinal_textures(game))
 			return (1);

@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 00:45:44 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 01:03:32 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_map
 	int			width;
 	int			height;
 	char		**map;
+	int			floor_color[3];
+	int			ceiling_color[3];
 	t_texture	textures[TEX_COUNT];
 }	t_map;
 
@@ -120,11 +122,11 @@ typedef struct s_wall_column
 }	t_wall_column;
 
 /* INIT */
-int		setup_game_environment(t_game *game, int debug_choosed_map);
+int		setup_game_environment(t_game *game, int choosed_texture, int choosed_size_map);
 
 /* PLAYER & MOVEMENTS */
 void	init_player(t_game *player);
-int		check_fov_and_init(t_game *game, int debug_choosed_map);
+int		check_fov_and_init(t_game *game, int choosed_texture, int choosed_size_map);
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
 bool	touch(float px, float py, t_game *game);

@@ -6,17 +6,41 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 00:37:52 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 01:03:12 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-static void	render_environment(t_game *game, int floor_color, int ceiling_color)
+static void render_floor(t_game *game)
 {
-	int	y;
-	int	x;
+	int		y;
+	int		x;
+	int		floor_color;
 
+	y = HEIGHT / 2;
+	floor_color = rgb_to_int(game->map.floor_color[0],
+			game->map.floor_color[1], game->map.floor_color[2]);
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(x, y, floor_color, game);
+			x++;
+		}
+		y++;
+	}
+}
+
+static void	render_ceiling(t_game *game)
+{
+	int		y;
+	int		x;
+	int		ceiling_color;
+	
+	ceiling_color = rgb_to_int(game->map.ceiling_color[0],
+			game->map.ceiling_color[1], game->map.ceiling_color[2]);
 	y = 0;
 	while (y < HEIGHT / 2)
 	{
@@ -24,17 +48,6 @@ static void	render_environment(t_game *game, int floor_color, int ceiling_color)
 		while (x < WIDTH)
 		{
 			put_pixel(x, y, ceiling_color, game);
-			x++;
-		}
-		y++;
-	}
-	y = HEIGHT / 2;
-	while (y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			put_pixel(x, y, floor_color, game);
 			x++;
 		}
 		y++;
@@ -52,7 +65,8 @@ int	render_game_frame(t_game *game)
 	player = &game->player;
 	move_player(player);
 	clear_image(game);
-	render_environment(game, rgb_to_int(220, 100, 0), rgb_to_int(225, 30, 0));
+	render_ceiling(game);
+	render_floor(game);
 	screen_x = 0;
 	fov = FOV * PI / 180.0;
 	while (screen_x < WIDTH)

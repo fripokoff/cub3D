@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 23:54:16 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 00:50:52 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ bool	touch(float px, float py, t_game *game)
 	return (false);
 }
 
-int	check_fov_and_init(t_game *game, int debug_choosed_map)
+int	check_fov_and_init(t_game *game, int choosed_texture, int choosed_size_map)
 {
 	if (FOV > 90 || FOV < 45)
 	{
 		printf("Error\nFOV must be between 45 and 90 degrees.\n");
 		return (1);
 	}
-	if (setup_game_environment(game, debug_choosed_map) == 1)
+	if (setup_game_environment(game, choosed_texture, choosed_size_map) == 1)
 		return (1);
 	return (0);
 }
