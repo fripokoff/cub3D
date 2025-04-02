@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 13:50:29 by fripok            #+#    #+#             */
-/*   Updated: 2025/04/02 19:44:13 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:55:58 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ static int	perform_dda(t_game *game, t_ray_data *data)
 			side = 1;
 		}
 		if (data->map[0] < 0 || data->map[1] < 0 || data->map[0]
-			>= game->map_width || data->map[1] >= game->map_height
-			|| game->map[data->map[1]][data->map[0]] == '1')
+			>= game->map.width || data->map[1] >= game->map.height
+			|| game->map.map[data->map[1]][data->map[0]] == '1')
 			hit = true;
 	}
 	return (side);

@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 16:24:54 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:57:23 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,37 +112,78 @@ static char	**create_small_map(void)
 	return (map);
 }
 
+static char	**create_very_small_map(void)
+{
+	char	**map;
+	int		i;
+	int		j;
+
+	map = malloc(sizeof(char *) * 4);
+	if (!map)
+		return (NULL);
+	i = 0;
+	while (i < 4)
+	{
+		map[i] = NULL;
+		i++;
+	}
+	map[0] = strdup("111");
+	map[1] = strdup("1N1");
+	map[2] = strdup("111");
+	map[3] = NULL;
+	i = 0;
+	while (i < 3)
+	{
+		if (!map[i])
+		{
+			j = 0;
+			while (j < i)
+			{
+				free(map[j]);
+				j++;
+			}
+			free(map);
+			return (NULL);
+		}
+		i++;
+	}
+	return (map);
+}
+
 static char	**initialize_game_map(t_game *game)
 {
 	t_player	*player;
 	char		**map;
-	int			map_width;
-	int			map_height;
 	int			player_count;
 	int			i;
 	int			j;
-	bool		use_small_map;
+	int		map_select;
 
-	use_small_map = true;
+	map_select = 0;
 	player = &game->player;
-	if (use_small_map)
+	if (map_select == 0)
 	{
 		map = create_small_map();
 		if (!map)
 			return (NULL);
-		map_width = 10;
-		map_height = 10;
-	}
-	else
+		game->map.width = 10;
+		game->map.height = 10;
+	}else if (map_select == 1)
 	{
-		map_width = 100;
-		map_height = 100;
-		map = generate_map(map_width, map_height);
+		map = create_very_small_map();
+		if (!map)
+			return (NULL);
+		game->map.width = 3;
+		game->map.height = 3;
+	}
+	else if (map_select == 2)
+	{
+		game->map.width = 100;
+		game->map.height = 100;
+		map = generate_map(game->map.width, game->map.height);
 		if (!map)
 			return (NULL);
 	}
-	game->map_width = map_width;
-	game->map_height = map_height;
 	player_count = 0;
 	i = 0;
 	while (map[i])
@@ -153,10 +194,8 @@ static char	**initialize_game_map(t_game *game)
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
-				player->x = j * WALL_SIZE + WALL_SIZE / 2;
-				player->y = i * WALL_SIZE + WALL_SIZE / 2;
-				player->pos_x = j;
-				player->pos_y = i;
+				player->x = j;
+				player->y = i;
 				player_count++;
 			}
 			j++;
@@ -199,10 +238,10 @@ static int	init_mlx_components(t_game *game)
 
 static int	load_cardinal_textures(t_game *game)
 {
-	if (load_texture(game, &game->textures[TEX_NORTH], "textures/cardinal/NO.xpm")
-		|| load_texture(game, &game->textures[TEX_SOUTH], "textures/cardinal/SO.xpm")
-		|| load_texture(game, &game->textures[TEX_EAST], "textures/cardinal/EA.xpm")
-		|| load_texture(game, &game->textures[TEX_WEST], "textures/cardinal/WE.xpm"))
+	if (load_texture(game, &game->map.textures[TEX_NORTH], "textures/cardinal/NO.xpm")
+		|| load_texture(game, &game->map.textures[TEX_SOUTH], "textures/cardinal/SO.xpm")
+		|| load_texture(game, &game->map.textures[TEX_EAST], "textures/cardinal/EA.xpm")
+		|| load_texture(game, &game->map.textures[TEX_WEST], "textures/cardinal/WE.xpm"))
 	{
 		printf("Error: loading cardinal textures failed\n");
 		return (1);
@@ -212,12 +251,12 @@ static int	load_cardinal_textures(t_game *game)
 
 static int	load_wolf_textures(t_game *game)
 {
-	if (load_texture(game, &game->textures[TEX_NORTH], "textures/wolf/wood.xpm")
-		|| load_texture(game, &game->textures[TEX_SOUTH], "textures/wolf/red_brick.xpm")
-		|| load_texture(game, &game->textures[TEX_EAST],
-			"textures/wolf/grey_stone.xpm")
-		|| load_texture(game, &game->textures[TEX_WEST],
-			"textures/wolf/purple_stone.xpm"))
+	if (load_texture(game, &game->map.textures[TEX_NORTH], "textures/minecraft/north.xpm")
+		|| load_texture(game, &game->map.textures[TEX_SOUTH], "textures/minecraft/south.xpm")
+		|| load_texture(game, &game->map.textures[TEX_EAST],
+			"textures/minecraft/east.xpm")
+		|| load_texture(game, &game->map.textures[TEX_WEST],
+			"textures/minecraft/west.xpm"))
 	{
 		printf("Error: loading wolf textures failed\n");
 		return (1);
@@ -229,8 +268,8 @@ int	setup_game_environment(t_game *game, int debug_choosed_map)
 {
 	if (init_mlx_components(game))
 		return (1);
-	game->map = initialize_game_map(game);
-	if (!game->map)
+	game->map.map = initialize_game_map(game);
+	if (!game->map.map)
 		return (printf("Error: map initialization failed\n"), 1);
 	init_player(game);
 	if (debug_choosed_map)

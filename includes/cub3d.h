@@ -6,26 +6,12 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 19:44:35 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 00:08:05 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
-# define WIDTH 1280
-# define HEIGHT 720
-# define W 119
-# define A 97
-# define S 115
-# define D 100
-# define LEFT 65361
-# define RIGHT 65363
-# define ESC 65307
-# define WALL_SIZE 64
-# define PLAYER_SPEED 5
-# define PLAYER_ROT_SPEED 2
-# define FOV 60
-# define FOCUS_OUT 10
 # define PI 3.14159265359
 
 # include "./mlx/mlx.h"
@@ -37,6 +23,17 @@
 # include <string.h>
 # include <fcntl.h>
 
+typedef enum e_game_settings
+{
+	WIDTH = 1280,
+	HEIGHT = 720,
+	WALL_SIZE = 64,
+	PLAYER_SPEED = 5,
+	PLAYER_ROT_SPEED = 2,
+	FOV = 60,
+	FOCUS_OUT = 10
+}	t_game_settings;
+
 typedef enum e_texture_id
 {
 	TEX_NORTH = 0,
@@ -46,12 +43,21 @@ typedef enum e_texture_id
 	TEX_COUNT = 4
 }	t_texture_id;
 
+typedef enum e_keyboard
+{
+	W = 119,
+	A = 97,
+	S = 115,
+	D = 100,
+	LEFT = 65361,
+	RIGHT = 65363,
+	ESC = 65307
+}	t_keyboard;
+
 typedef struct s_player
 {
 	float			x;
 	float			y;
-	float			pos_x;
-	float			pos_y;
 	float			angle;
 	struct s_game	*game;
 	bool			key_up;
@@ -60,7 +66,6 @@ typedef struct s_player
 	bool			key_right;
 	bool			left_rotate;
 	bool			right_rotate;
-	float			speed;
 }	t_player;
 
 typedef struct s_ray_data
@@ -83,6 +88,14 @@ typedef struct s_texture
 	int		endian;
 }	t_texture;
 
+typedef struct s_map
+{
+	int			width;
+	int			height;
+	char		**map;
+	t_texture	textures[TEX_COUNT];
+}	t_map;
+
 typedef struct s_game
 {
 	void		*mlx;
@@ -93,10 +106,7 @@ typedef struct s_game
 	int			bpp;
 	int			size_line;
 	int			endian;
-	char		**map;
-	int			map_width;
-	int			map_height;
-	t_texture	textures[4];
+	t_map		map;
 }	t_game;
 
 typedef struct s_wall_column

@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 19:39:54 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:54:16 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ void	init_player(t_game *game)
 	int	player_x;
 	int	player_y;
 
-	player_x = game->player.pos_x;
-	player_y = game->player.pos_y;
-	if (game->map[player_y][player_x] == 'N')
+	player_x = game->player.x;
+	player_y = game->player.y;
+	if (game->map.map[player_y][player_x] == 'N')
 		game->player.angle = 3 * PI / 2;
-	else if (game->map[player_y][player_x] == 'S')
+	else if (game->map.map[player_y][player_x] == 'S')
 		game->player.angle = PI / 2;
-	else if (game->map[player_y][player_x] == 'E')
+	else if (game->map.map[player_y][player_x] == 'E')
 		game->player.angle = 0;
-	else if (game->map[player_y][player_x] == 'W')
+	else if (game->map.map[player_y][player_x] == 'W')
 		game->player.angle = PI;
-	game->player.speed = PLAYER_SPEED;
+	game->player.x = player_x * WALL_SIZE + WALL_SIZE / 2;
+	game->player.y = player_y * WALL_SIZE + WALL_SIZE / 2;
 	game->player.key_up = false;
 	game->player.key_down = false;
 	game->player.key_left = false;
@@ -79,9 +80,9 @@ bool	touch(float px, float py, t_game *game)
 
 	x = floor(px / WALL_SIZE);
 	y = floor(py / WALL_SIZE);
-	if (x < 0 || y < 0 || x >= game->map_width || y >= game->map_height)
+	if (x < 0 || y < 0 || x >= game->map.width || y >= game->map.height)
 		return (true);
-	if (game->map[y][x] == '1')
+	if (game->map.map[y][x] == '1')
 		return (true);
 	return (false);
 }

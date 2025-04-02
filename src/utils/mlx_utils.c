@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:57:38 by fripok            #+#    #+#             */
-/*   Updated: 2025/04/02 17:23:31 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:57:42 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,16 @@ int	exit_game(t_game *game)
 	i = 0;
 	while (i < TEX_COUNT)
 	{
-		if (game->textures[i].img)
-			mlx_destroy_image(game->mlx, game->textures[i].img);
+		if (game->map.textures[i].img)
+			mlx_destroy_image(game->mlx, game->map.textures[i].img);
 		i++;
 	}
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
-	if (game->map)
-		free_map(game->map);
+	if (game->map.map)
+		free_map(game->map.map);
 	if (game->mlx)
 	{
 		mlx_destroy_display(game->mlx);

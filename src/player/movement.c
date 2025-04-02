@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 19:24:55 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:46:37 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,23 @@ static void	player_movements(t_player *player, double *dx, double *dy,
 	sin_angle = sin(player->angle);
 	if (player->key_up)
 	{
-		*dx += cos_angle * player->speed * delta_time * 20 * 1.5;
-		*dy += sin_angle * player->speed * delta_time * 20 * 1.5;
+		*dx += cos_angle * PLAYER_SPEED * delta_time * 20 * 1.5;
+		*dy += sin_angle * PLAYER_SPEED * delta_time * 20 * 1.5;
 	}
 	if (player->key_down)
 	{
-		*dx -= cos_angle * player->speed * delta_time * 20 * 1.5;
-		*dy -= sin_angle * player->speed * delta_time * 20 * 1.5;
+		*dx -= cos_angle * PLAYER_SPEED * delta_time * 20 * 1.5;
+		*dy -= sin_angle * PLAYER_SPEED * delta_time * 20 * 1.5;
 	}
 	if (player->key_left)
 	{
-		*dx += sin_angle * player->speed * delta_time * 20;
-		*dy -= cos_angle * player->speed * delta_time * 20;
+		*dx += sin_angle * PLAYER_SPEED * delta_time * 20;
+		*dy -= cos_angle * PLAYER_SPEED * delta_time * 20;
 	}
 	if (player->key_right)
 	{
-		*dx -= sin_angle * player->speed * delta_time * 20;
-		*dy += cos_angle * player->speed * delta_time * 20;
+		*dx -= sin_angle * PLAYER_SPEED * delta_time * 20;
+		*dy += cos_angle * PLAYER_SPEED * delta_time * 20;
 	}
 }
 

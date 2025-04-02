@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 19:43:49 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/02 23:57:57 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 	int		y;
 	int		color;
 
-	step = 1.0 * game->textures[wall->tex_id].height / wall->wall_height;
+	step = 1.0 * game->map.textures[wall->tex_id].height / wall->wall_height;
 	tex_pos = (wall->draw_start - HEIGHT / 2 + wall->wall_height / 2) * step;
 	y = wall->draw_start;
 	while (y <= wall->draw_end)
 	{
-		tex_y = (int)tex_pos & (game->textures[wall->tex_id].height - 1);
+		tex_y = (int)tex_pos & (game->map.textures[wall->tex_id].height - 1);
 		tex_pos += step;
-		color = get_texture_pixel(&game->textures[wall->tex_id],
-				(int)(wall->wall_x * game->textures[wall->tex_id].width),
+		color = get_texture_pixel(&game->map.textures[wall->tex_id],
+				(int)(wall->wall_x * game->map.textures[wall->tex_id].width),
 				tex_y);
 		put_pixel(wall->column_id, y, color, game);
 		y++;
