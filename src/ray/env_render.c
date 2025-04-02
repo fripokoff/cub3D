@@ -3,39 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_render.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:37:07 by kpires           ###   ########.fr       */
+/*   Updated: 2025/04/02 19:43:35 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
-
-int	render_game_frame(t_game *game)
-{
-	int			i;
-	float		camera_x;
-	float		ray_angle;
-	t_player	*player;
-	float		fov;
-
-	player = &game->player;
-	move_player(player);
-	clear_image(game);
-	render_environment(game, rgb_to_int(220, 100, 0), rgb_to_int(225, 30, 0));
-	i = 0;
-	fov = FOV * PI / 180.0;
-	while (i < WIDTH)
-	{
-		camera_x = 2 * i / (float)WIDTH - 1;
-		ray_angle = player->angle + atan(camera_x * tan(fov / 2));
-		render_wall_column(player, game, ray_angle, i);
-		i++;
-	}
-	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
-	return (0);
-}
 
 static void	render_environment(t_game *game, int floor_color, int ceiling_color)
 {
@@ -64,6 +39,31 @@ static void	render_environment(t_game *game, int floor_color, int ceiling_color)
 		}
 		y++;
 	}
+}
+
+int	render_game_frame(t_game *game)
+{
+	int			i;
+	float		camera_x;
+	float		ray_angle;
+	t_player	*player;
+	float		fov;
+
+	player = &game->player;
+	move_player(player);
+	clear_image(game);
+	render_environment(game, rgb_to_int(220, 100, 0), rgb_to_int(225, 30, 0));
+	i = 0;
+	fov = FOV * PI / 180.0;
+	while (i < WIDTH)
+	{
+		camera_x = 2 * i / (float)WIDTH - 1;
+		ray_angle = player->angle + atan(camera_x * tan(fov / 2));
+		render_wall_column(player, game, ray_angle, i);
+		i++;
+	}
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	return (0);
 }
 
 int	load_texture(t_game *game, t_texture *text, char *path)

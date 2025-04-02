@@ -1,30 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/21 10:03:08 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 16:03:01 by fripok           ###   ########.fr       */
+/*   Created: 2025/04/02 15:59:56 by fripok            #+#    #+#             */
+/*   Updated: 2025/04/02 16:02:34 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../../includes/cub3d.h"
 
-int	main(int ac, char **av)
+void	clear_image(t_game *game)
 {
-	t_game	game;
-	int		choosed_map;
+	int	y;
+	int	x;
 
-	(void)ac;
-	(void)av;
-	choosed_map = 0;
-	if (av[1])
-		choosed_map = atoi(av[1]);
-	if (check_fov_and_init(&game, choosed_map) == 1)
-		return (1);
-	setup_hooks(&game);
-	mlx_loop(game.mlx);
-	return (0);
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			put_pixel(x, y, 0, game);
+			x++;
+		}
+		y++;
+	}
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ray_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:22 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:25:52 by kpires           ###   ########.fr       */
+/*   Updated: 2025/04/02 19:43:23 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
 
-float	fixed_dist(t_player *player, float ray[2], t_game *game)
+float	fixed_dist(t_player *player, float ray[2])
 {
 	float	delta_x;
 	float	delta_y;
@@ -21,7 +21,7 @@ float	fixed_dist(t_player *player, float ray[2], t_game *game)
 
 	delta_x = ray[0] - player->x;
 	delta_y = ray[1] - player->y;
-	angle_diff = atan2(delta_y, delta_x) - game->player.angle;
+	angle_diff = atan2(delta_y, delta_x) - player->angle;
 	while (angle_diff < -PI)
 		angle_diff += 2 * PI;
 	while (angle_diff > PI)
@@ -35,31 +35,28 @@ int	rgb_to_int(int r, int g, int b)
 	return ((r << 16) | (g << 8) | (b));
 }
 
-float	lerp(float a, float b, float t)
+static double	get_time(void)
 {
-	return (a + t * (b - a));
+	static double	last_time = 0.0;
+	static int		frame_count = 0;
+	double			frame_time;
+
+	frame_count++;
+	frame_time = 0.016667;
+	last_time = frame_count * frame_time;
+	return (last_time);
 }
 
-float	get_precise_wall_hit(float ray[2], float old_ray[2], t_game *game)
+double	get_delta_time(void)
 {
-	float	precision;
-	float	t;
-	float	step;
-	float	test_x;
-	float	test_y;
+	static double	last_time = 0.0;
+	double			current_time;
+	double			delta_time;
 
-	precision = 0.00001;
-	t = 0.0;
-	step = 0.5;
-	while (step > precision)
-	{
-		test_x = lerp(old_ray[0], ray[0], t);
-		test_y = lerp(old_ray[1], ray[1], t);
-		if (touch(test_x, test_y, game))
-			t -= step;
-		else
-			t += step;
-		step *= 0.5;
-	}
-	return (t);
+	current_time = get_time();
+	delta_time = current_time - last_time;
+	last_time = current_time;
+	if (delta_time > 0.1)
+		delta_time = 0.1;
+	return (delta_time);
 }

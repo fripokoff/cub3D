@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:29:58 by kpires           ###   ########.fr       */
+/*   Updated: 2025/04/02 19:39:54 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	init_player(t_game *game)
 		game->player.angle = 0;
 	else if (game->map[player_y][player_x] == 'W')
 		game->player.angle = PI;
+	game->player.speed = PLAYER_SPEED;
 	game->player.key_up = false;
 	game->player.key_down = false;
 	game->player.key_left = false;
@@ -37,6 +38,8 @@ void	init_player(t_game *game)
 
 int	key_press(int keycode, t_player *player)
 {
+	if (keycode == ESC)
+		exit_game(player->game);
 	if (keycode == W)
 		player->key_up = true;
 	if (keycode == S)
@@ -74,9 +77,9 @@ bool	touch(float px, float py, t_game *game)
 	int	x;
 	int	y;
 
-	x = px / WALL_SIZE;
-	y = py / WALL_SIZE;
-	if (x < 0 || y < 0 || x >= (int)strlen(game->map[0]) || y >= 10)
+	x = floor(px / WALL_SIZE);
+	y = floor(py / WALL_SIZE);
+	if (x < 0 || y < 0 || x >= game->map_width || y >= game->map_height)
 		return (true);
 	if (game->map[y][x] == '1')
 		return (true);

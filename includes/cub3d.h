@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:56:47 by kpires           ###   ########.fr       */
+/*   Updated: 2025/04/02 19:44:35 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@
 # define D 100
 # define LEFT 65361
 # define RIGHT 65363
-# define BLUE_HEX 0x0000FF
-# define GREEN_HEX 0x00FF00
+# define ESC 65307
 # define WALL_SIZE 64
 # define PLAYER_SPEED 5
-# define PLAYER_ROT_SPEED 0.05
+# define PLAYER_ROT_SPEED 2
 # define FOV 60
 # define FOCUS_OUT 10
 # define PI 3.14159265359
@@ -36,6 +35,16 @@
 # include <stdbool.h>
 # include <math.h>
 # include <string.h>
+# include <fcntl.h>
+
+typedef enum e_texture_id
+{
+	TEX_NORTH = 0,
+	TEX_SOUTH = 1,
+	TEX_EAST = 2,
+	TEX_WEST = 3,
+	TEX_COUNT = 4
+}	t_texture_id;
 
 typedef struct s_player
 {
@@ -51,7 +60,17 @@ typedef struct s_player
 	bool			key_right;
 	bool			left_rotate;
 	bool			right_rotate;
+	float			speed;
 }	t_player;
+
+typedef struct s_ray_data
+{
+	float	ray_dir[2];
+	float	delta_dist[2];
+	float	side_dist[2];
+	int		map[2];
+	int		step[2];
+}	t_ray_data;
 
 typedef struct s_texture
 {
@@ -75,6 +94,8 @@ typedef struct s_game
 	int			size_line;
 	int			endian;
 	char		**map;
+	int			map_width;
+	int			map_height;
 	t_texture	textures[4];
 }	t_game;
 
@@ -102,19 +123,23 @@ int		focus_out(t_player *player);
 
 /* RENDER */
 int		load_texture(t_game *game, t_texture *text, char *path);
-void	put_pixel(int x, int y, int color, t_game *game);
 int		get_texture_pixel(t_texture *text, int x, int y);
 int		render_game_frame(t_game *game);
 
 /* RAY */
-float	get_precise_wall_hit(float ray[2], float old_ray[2], t_game *game);
-float	lerp(float a, float b, float t);
-float	fixed_dist(t_player *player, float ray[2], t_game *game);
+double	get_delta_time(void);
+float	fixed_dist(t_player *player, float ray[2]);
 void	render_wall_column(t_player *player, t_game *game,
 			float start_x, int i);
+int		cast_ray_to_wall(t_player *player, t_game *game, float *angles,
+			float *ray_coords);
 
 /* UTILS & MLX UTILS */
+int		setup_hooks(t_game *game);
+void	put_pixel(int x, int y, int color, t_game *game);
 void	clear_image(t_game *game);
 int		rgb_to_int(int r, int g, int b);
+int		exit_game(t_game *game);
+void	free_map(char **map);
 
 #endif

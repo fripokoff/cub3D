@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/03/25 12:19:51 by kpires           ###   ########.fr       */
+/*   Updated: 2025/04/02 19:24:55 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,58 @@
 
 static void	player_rotate(t_player *player)
 {
+	double	player_rot_speed;
+	double	rot_speed;
+	double	delta_time;
+
+	delta_time = get_delta_time();
+	player_rot_speed = (double)PLAYER_ROT_SPEED / 3;
+	rot_speed = player_rot_speed * delta_time;
 	if (player->left_rotate)
-		player->angle = fmod(player->angle - PLAYER_ROT_SPEED + 2 * PI, 2 * PI);
+		player->angle -= rot_speed;
 	if (player->right_rotate)
-		player->angle = fmod(player->angle + PLAYER_ROT_SPEED, 2 * PI);
-	if (player->angle < 0)
+		player->angle += rot_speed;
+	while (player->angle < 0)
 		player->angle += 2 * PI;
-	if (player->angle > 2 * PI)
+	while (player->angle >= 2 * PI)
 		player->angle -= 2 * PI;
 }
 
-static void	player_movements(t_player *player, float *dx, float *dy)
+static void	player_movements(t_player *player, double *dx, double *dy,
+		double delta_time)
 {
-	float	cos_angle;
-	float	sin_angle;
+	double	cos_angle;
+	double	sin_angle;
 
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->key_up)
 	{
-		*dx += cos_angle * PLAYER_SPEED;
-		*dy += sin_angle * PLAYER_SPEED;
+		*dx += cos_angle * player->speed * delta_time * 20 * 1.5;
+		*dy += sin_angle * player->speed * delta_time * 20 * 1.5;
 	}
 	if (player->key_down)
 	{
-		*dx -= cos_angle * PLAYER_SPEED;
-		*dy -= sin_angle * PLAYER_SPEED;
+		*dx -= cos_angle * player->speed * delta_time * 20 * 1.5;
+		*dy -= sin_angle * player->speed * delta_time * 20 * 1.5;
 	}
 	if (player->key_left)
 	{
-		*dx += sin_angle * PLAYER_SPEED;
-		*dy -= cos_angle * PLAYER_SPEED;
+		*dx += sin_angle * player->speed * delta_time * 20;
+		*dy -= cos_angle * player->speed * delta_time * 20;
 	}
 	if (player->key_right)
 	{
-		*dx -= sin_angle * PLAYER_SPEED;
-		*dy += cos_angle * PLAYER_SPEED;
+		*dx -= sin_angle * player->speed * delta_time * 20;
+		*dy += cos_angle * player->speed * delta_time * 20;
 	}
 }
 
-static void	player_colision(t_player *player, float dx, float dy)
+static void	player_colision(t_player *player, double dx, double dy)
 {
 	bool	can_move_x;
 	bool	can_move_y;
-	float	margin;
+	double	margin;
 
 	margin = 10.0f;
 	can_move_x = !touch(dx + margin, player->y + margin, player->game)
@@ -76,23 +84,14 @@ static void	player_colision(t_player *player, float dx, float dy)
 
 void	move_player(t_player *player)
 {
-	float	dx;
-	float	dy;
+	double	dx;
+	double	dy;
+	double	delta_time;
 
 	dx = 0;
 	dy = 0;
+	delta_time = get_delta_time();
 	player_rotate(player);
-	player_movements(player, &dx, &dy);
+	player_movements(player, &dx, &dy, delta_time);
 	player_colision(player, player->x + dx, player->y + dy);
-}
-
-int	focus_out(t_player *player)
-{
-	player->key_up = false;
-	player->key_down = false;
-	player->key_left = false;
-	player->key_right = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
-	return (0);
 }
