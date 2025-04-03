@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 13:50:29 by fripok            #+#    #+#             */
-/*   Updated: 2025/04/03 12:51:57 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:40:13 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ static void	setup_dda_steps(t_player *player, t_ray_data *data)
 
 static int	perform_dda(t_game *game, t_ray_data *data)
 {
-	bool	hit;
+	int		hit;
 	int		side;
 
-	hit = false;
+	hit = 0;
 	side = 0;
 	while (!hit)
 	{
@@ -112,7 +112,7 @@ static int	perform_dda(t_game *game, t_ray_data *data)
 		if (data->map[0] < 0 || data->map[1] < 0 || data->map[0]
 			>= game->map.width || data->map[1] >= game->map.height
 			|| game->map.map[data->map[1]][data->map[0]] == '1')
-			hit = true;
+			hit = 1;
 	}
 	return (side);
 }

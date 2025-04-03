@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 12:56:04 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:51:41 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ void	init_player(t_game *game)
 		game->player.angle = PI;
 	game->player.x = player_x * WALL_SIZE + WALL_SIZE / 2;
 	game->player.y = player_y * WALL_SIZE + WALL_SIZE / 2;
-	game->player.key_up = false;
-	game->player.key_down = false;
-	game->player.key_left = false;
-	game->player.key_right = false;
-	game->player.left_rotate = false;
-	game->player.right_rotate = false;
+	game->player.moves[MOVE_UP] = 0;
+	game->player.moves[MOVE_DOWN] = 0;
+	game->player.moves[MOVE_LEFT] = 0;
+	game->player.moves[MOVE_RIGHT] = 0;
+	game->player.moves[ROTATE_LEFT] = 0;
+	game->player.moves[ROTATE_RIGHT] = 0;
 }
 
 /*
@@ -64,17 +64,17 @@ int	key_press(int keycode, t_player *player)
 	if (keycode == ESC)
 		exit_game(player->game);
 	if (keycode == W)
-		player->key_up = true;
+		player->moves[MOVE_UP] = 1;
 	if (keycode == S)
-		player->key_down = true;
+		player->moves[MOVE_DOWN] = 1;
 	if (keycode == A)
-		player->key_left = true;
+		player->moves[MOVE_LEFT] = 1;
 	if (keycode == D)
-		player->key_right = true;
+		player->moves[MOVE_RIGHT] = 1;
 	if (keycode == LEFT)
-		player->left_rotate = true;
+		player->moves[ROTATE_LEFT] = 1;
 	if (keycode == RIGHT)
-		player->right_rotate = true;
+		player->moves[ROTATE_RIGHT] = 1;
 	return (0);
 }
 
@@ -90,45 +90,18 @@ int	key_press(int keycode, t_player *player)
 int	key_release(int keycode, t_player *player)
 {
 	if (keycode == W)
-		player->key_up = false;
+		player->moves[MOVE_UP] = 0;
 	if (keycode == S)
-		player->key_down = false;
+		player->moves[MOVE_DOWN] = 0;
 	if (keycode == A)
-		player->key_left = false;
+		player->moves[MOVE_LEFT] = 0;
 	if (keycode == D)
-		player->key_right = false;
+		player->moves[MOVE_RIGHT] = 0;
 	if (keycode == LEFT)
-		player->left_rotate = false;
+		player->moves[ROTATE_LEFT] = 0;
 	if (keycode == RIGHT)
-		player->right_rotate = false;
+		player->moves[ROTATE_RIGHT] = 0;
 	return (0);
-}
-
-/*
-** BONUS
-** Collision detection function that checks if a point touches a wall.
-** Converts pixel coordinates to map grid coordinates and checks:
-**  1. If the point is outside the map boundaries
-**  2. If the point is inside a wall cell ('1')
-** ----------------------------------------------------------------------------
-** @param px: X-coordinate of the point to check
-** @param py: Y-coordinate of the point to check
-** @param game: Game state containing the map information
-** @return: true if collision detected, false otherwise
-*/
-
-bool	touch(float px, float py, t_game *game)
-{
-	int	x;
-	int	y;
-
-	x = floor(px / WALL_SIZE);
-	y = floor(py / WALL_SIZE);
-	if (x < 0 || y < 0 || x >= game->map.width || y >= game->map.height)
-		return (true);
-	if (game->map.map[y][x] == '1')
-		return (true);
-	return (false);
 }
 
 /*

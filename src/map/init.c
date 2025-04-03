@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 01:05:29 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:41:02 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static char	**generate_map(int width, int height)
 	char	**map;
 	int		i;
 	int		j;
-	bool	player_placed;
+	int		player_placed;
 
-	player_placed = false;
+	player_placed = 0;
 	map = malloc(sizeof(char *) * (height + 1));
 	if (!map)
 		return (NULL);
@@ -52,7 +52,7 @@ static char	**generate_map(int width, int height)
 			else if (!player_placed && i == height / 2 && j == width / 2)
 			{
 				map[i][j] = 'N';
-				player_placed = true;
+				player_placed = 1;
 			}
 			else if (rand() % 10 == 0)
 				map[i][j] = '1';

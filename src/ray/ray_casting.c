@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 12:51:25 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:41:33 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 */
 
 static void	select_wall_texture(float ray_coords[2], float angles[2],
-	bool hit_vertical, t_wall_column *wall)
+	int hit_vertical, t_wall_column *wall)
 {
 	if (hit_vertical)
 	{
@@ -116,7 +116,7 @@ void	render_wall_column(t_player *player, t_game *game, float start_x, int i)
 	float			ray_coords[2];
 	float			dist;
 	t_wall_column	wall;
-	bool			hit_vertical;
+	int				hit_vertical;
 
 	angles[0] = cos(start_x);
 	angles[1] = sin(start_x);

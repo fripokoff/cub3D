@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 12:52:05 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:26:54 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,45 +69,6 @@ static void	render_ceiling(t_game *game)
 }
 
 /*
-** The main rendering function called each frame.
-** Responsible for:
-**  1. Updating player position
-**  2. Clearing the screen
-**  3. Rendering the ceiling and floor
-**  4. Casting rays for each vertical column of the screen
-**  5. Displaying the rendered image
-** ----------------------------------------------------------------------------
-** @param game: The game state containing all rendering information
-** @return: Always returns 0 (success)
-*/
-
-int	render_game_frame(t_game *game)
-{
-	int			screen_x;
-	float		camera_x;
-	float		ray_angle;
-	t_player	*player;
-	float		fov;
-
-	player = &game->player;
-	move_player(player);
-	clear_image(game);
-	render_ceiling(game);
-	render_floor(game);
-	screen_x = 0;
-	fov = FOV * PI / 180.0;
-	while (screen_x < WIDTH)
-	{
-		camera_x = 2 * screen_x / (float)WIDTH - 1;
-		ray_angle = player->angle + atan(camera_x * tan(fov / 2));
-		render_wall_column(player, game, ray_angle, screen_x);
-		screen_x++;
-	}
-	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
-	return (0);
-}
-
-/*
 ** Loads a texture from an XPM file into the MLX image system.
 ** ----------------------------------------------------------------------------
 ** @param game: The game state containing MLX pointers
@@ -146,4 +107,43 @@ int	get_texture_pixel(t_texture *texture, int x, int y)
 	pixel = texture->addr + (y * texture->line_length
 			+ x * (texture->bits_per_pixel / 8));
 	return (*(unsigned int *)pixel);
+}
+
+/*
+** The main rendering function called each frame.
+** Responsible for:
+**  1. Updating player position
+**  2. Clearing the screen
+**  3. Rendering the ceiling and floor
+**  4. Casting rays for each vertical column of the screen
+**  5. Displaying the rendered image
+** ----------------------------------------------------------------------------
+** @param game: The game state containing all rendering information
+** @return: Always returns 0 (success)
+*/
+
+int	render_game_frame(t_game *game)
+{
+	int			screen_x;
+	float		camera_x;
+	float		ray_angle;
+	t_player	*player;
+	float		fov;
+
+	player = &game->player;
+	move_player(player);
+	clear_image(game);
+	render_ceiling(game);
+	render_floor(game);
+	screen_x = 0;
+	fov = FOV * PI / 180.0;
+	while (screen_x < WIDTH)
+	{
+		camera_x = 2 * screen_x / (float)WIDTH - 1;
+		ray_angle = player->angle + atan(camera_x * tan(fov / 2));
+		render_wall_column(player, game, ray_angle, screen_x);
+		screen_x++;
+	}
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	return (0);
 }

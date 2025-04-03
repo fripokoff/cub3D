@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 01:16:10 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:55:23 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 # define PI 3.14159265359
 
 # include "./mlx/mlx.h"
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdbool.h>
+# include "./mlx/mlx_int.h"
 # include <math.h>
-# include <string.h>
-# include <fcntl.h>
 
 typedef enum e_game_settings
 {
@@ -54,18 +49,24 @@ typedef enum e_keyboard
 	ESC = 65307
 }	t_keyboard;
 
+typedef enum e_moves
+{
+	MOVE_UP = 0,
+	MOVE_DOWN = 1,
+	MOVE_LEFT = 2,
+	MOVE_RIGHT = 3,
+	ROTATE_LEFT = 4,
+	ROTATE_RIGHT = 5,
+	TOTAL_MOVES = 6
+}	t_moves;
+
 typedef struct s_player
 {
 	float			x;
 	float			y;
 	float			angle;
 	struct s_game	*game;
-	bool			key_up;
-	bool			key_down;
-	bool			key_left;
-	bool			key_right;
-	bool			left_rotate;
-	bool			right_rotate;
+	int				moves[TOTAL_MOVES];
 }	t_player;
 
 typedef struct s_ray_data
@@ -132,7 +133,6 @@ int		check_fov_and_init(t_game *game, int choosed_texture,
 			int choosed_size_map);
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
-bool	touch(float px, float py, t_game *game);
 void	move_player(t_player *player);
 int		focus_out(t_player *player);
 

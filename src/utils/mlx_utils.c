@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 15:57:38 by fripok            #+#    #+#             */
-/*   Updated: 2025/04/02 23:57:42 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:49:38 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int	focus_out(t_player *player)
 {
-	player->key_up = false;
-	player->key_down = false;
-	player->key_left = false;
-	player->key_right = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
+	player->moves[MOVE_UP] = 0;
+	player->moves[MOVE_DOWN] = 0;
+	player->moves[MOVE_LEFT] = 0;
+	player->moves[MOVE_RIGHT] = 0;
+	player->moves[ROTATE_LEFT] = 0;
+	player->moves[ROTATE_RIGHT] = 0;
 	return (0);
 }
 
