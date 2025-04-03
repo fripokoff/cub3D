@@ -6,11 +6,21 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:22 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/02 19:43:23 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:51:29 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+/*
+** Calculates corrected distance to prevent fish-eye effect.
+** Applies the cosine correction based on the angle,
+** between ray and player direction.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position, direction)
+** @param ray: Coordinates of the ray hit
+** @return: The corrected distance value
+*/
 
 float	fixed_dist(t_player *player, float ray[2])
 {

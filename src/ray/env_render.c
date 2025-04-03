@@ -6,11 +6,18 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:21:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 01:16:28 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:52:05 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+/*
+** This function renders the floor of the environment.
+** It fills the bottom half of the screen with the floor color.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing all rendering information
+*/
 
 static void	render_floor(t_game *game)
 {
@@ -33,6 +40,13 @@ static void	render_floor(t_game *game)
 	}
 }
 
+/*
+** This function renders the ceiling of the environment.
+** It fills the top half of the screen with the ceiling color.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing all rendering information
+*/
+
 static void	render_ceiling(t_game *game)
 {
 	int		y;
@@ -53,6 +67,19 @@ static void	render_ceiling(t_game *game)
 		y++;
 	}
 }
+
+/*
+** The main rendering function called each frame.
+** Responsible for:
+**  1. Updating player position
+**  2. Clearing the screen
+**  3. Rendering the ceiling and floor
+**  4. Casting rays for each vertical column of the screen
+**  5. Displaying the rendered image
+** ----------------------------------------------------------------------------
+** @param game: The game state containing all rendering information
+** @return: Always returns 0 (success)
+*/
 
 int	render_game_frame(t_game *game)
 {
@@ -80,6 +107,15 @@ int	render_game_frame(t_game *game)
 	return (0);
 }
 
+/*
+** Loads a texture from an XPM file into the MLX image system.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing MLX pointers
+** @param texture: Pointer to the texture structure to fill
+** @param path: Path to the XPM file to load
+** @return: 0 on success, 1 on failure
+*/
+
 int	load_texture(t_game *game, t_texture *texture, char *path)
 {
 	texture->img = mlx_xpm_file_to_image(game->mlx, path,
@@ -90,6 +126,16 @@ int	load_texture(t_game *game, t_texture *texture, char *path)
 			&texture->line_length, &texture->endian);
 	return (0);
 }
+
+/*
+** Retrieves a pixel color from a texture at given coordinates.
+** Handles boundary checking to prevent out-of-bounds access.
+** ----------------------------------------------------------------------------
+** @param texture: The texture to get the pixel from
+** @param x: X coordinate in the texture
+** @param y: Y coordinate in the texture
+** @return: The color value at the specified coordinates
+*/
 
 int	get_texture_pixel(t_texture *texture, int x, int y)
 {

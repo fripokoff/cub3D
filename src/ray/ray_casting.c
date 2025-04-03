@@ -6,11 +6,21 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 00:38:08 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:51:25 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+/*
+** Determines which texture to use based on the ray's impact coordinates.
+** Calculates the exact x-coordinate within the texture for proper mapping.
+** ----------------------------------------------------------------------------
+** @param ray_coords: The coordinates where the ray hit the wall
+** @param angles: The direction angles of the ray
+** @param hit_vertical: Whether the ray hit a vertical wall face
+** @param wall: Output structure to store texture information
+*/
 
 static void	select_wall_texture(float ray_coords[2], float angles[2],
 	bool hit_vertical, t_wall_column *wall)
@@ -37,6 +47,16 @@ static void	select_wall_texture(float ray_coords[2], float angles[2],
 	}
 }
 
+/*
+** Calculates the dimensions of the wall to be rendered on screen.
+** Adjusts the wall height based on the distance from the player (perspective).
+** ----------------------------------------------------------------------------
+** @param dist: Distance to the wall
+** @param draw_start: Output parameter for the starting Y coordinate
+** @param draw_end: Output parameter for the ending Y coordinate
+** @param wall_height: Output parameter for the calculated wall height
+*/
+
 static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
 	float *wall_height)
 {
@@ -48,6 +68,14 @@ static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
 	if (*draw_end >= HEIGHT)
 		*draw_end = HEIGHT - 1;
 }
+
+/*
+** Renders a textured vertical stripe of a wall.
+** Maps texture coordinates to screen coordinates and applies texture pixels.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing texture information
+** @param wall: Wall column data including texture ID and dimensions
+*/
 
 static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 {
@@ -71,6 +99,16 @@ static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 		y++;
 	}
 }
+
+/*
+** Main ray casting function for a single vertical column of the screen.
+** Casts a ray, calculates wall hit, selects texture, and renders the wall.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position, direction)
+** @param game: Game state including map and textures
+** @param start_x: Angle of the ray to cast
+** @param i: Screen column to render
+*/
 
 void	render_wall_column(t_player *player, t_game *game, float start_x, int i)
 {

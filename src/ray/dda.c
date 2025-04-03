@@ -6,11 +6,20 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 13:50:29 by fripok            #+#    #+#             */
-/*   Updated: 2025/04/02 23:55:58 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:51:57 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+/*
+** Initializes ray data for the DDA algorithm.
+** Sets up ray direction and calculates delta distances.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position)
+** @param angles: Direction angles of the ray
+** @param data: Output structure to store ray data
+*/
 
 static void	init_ray_data(t_player *player, float *angles, t_ray_data *data)
 {
@@ -32,6 +41,15 @@ static void	init_ray_data(t_player *player, float *angles, t_ray_data *data)
 	else
 		data->delta_dist[1] = fabs(1.0 / data->ray_dir[1]);
 }
+
+/*
+** Configures the step direction and initial side distances
+** for the DDA algorithm.
+** These values determine how to traverse the grid during ray casting.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position)
+** @param data: Ray data to configure
+*/
 
 static void	setup_dda_steps(t_player *player, t_ray_data *data)
 {
@@ -60,6 +78,15 @@ static void	setup_dda_steps(t_player *player, t_ray_data *data)
 			* data->delta_dist[1];
 	}
 }
+
+/*
+** Executes the DDA algorithm to find where the ray hits a wall.
+** Incrementally steps through the grid cells until a wall is hit.
+** ----------------------------------------------------------------------------
+** @param game: Game state containing the map
+** @param data: Ray data for traversal
+** @return: 0 if a vertical wall face was hit, 1 if horizontal
+*/
 
 static int	perform_dda(t_game *game, t_ray_data *data)
 {
@@ -90,6 +117,16 @@ static int	perform_dda(t_game *game, t_ray_data *data)
 	return (side);
 }
 
+/*
+** Calculates the exact coordinates where the ray hits the wall.
+** Uses the side of impact to determine the precise hit position.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position)
+** @param data: Ray data after DDA execution
+** @param ray_coords: Output array to store the hit coordinates
+** @param side: Which side of the wall was hit (0=vertical, 1=horizontal)
+*/
+
 static void	calculate_wall_hit(t_player *player, t_ray_data *data,
 	float *ray_coords, int side)
 {
@@ -114,6 +151,20 @@ static void	calculate_wall_hit(t_player *player, t_ray_data *data,
 				* (ray_coords[1] - player->y) / data->ray_dir[1];
 	}
 }
+
+/*
+** Main DDA ray casting function that combines all steps to find wall hits.
+** 1. Initializes ray data
+** 2. Sets up step directions
+** 3. Performs DDA to find a wall
+** 4. Calculates exact hit coordinates
+** ----------------------------------------------------------------------------
+** @param player: Player data
+** @param game: Game state
+** @param angles: Direction angles of the ray
+** @param ray_coords: Output array to store hit coordinates
+** @return: The side of the wall that was hit
+*/
 
 int	cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 	float *ray_coords)

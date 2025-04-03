@@ -6,11 +6,20 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:20 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 00:50:52 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 12:56:04 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+/*
+** Initializes the player's state based on the starting position in the map.
+** Sets the initial angle based on the direction character (N, S, E, W).
+** Converts map grid coordinates to actual pixel coordinates.
+** Initializes all movement state flags to false.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing player and map information
+*/
 
 void	init_player(t_game *game)
 {
@@ -37,6 +46,19 @@ void	init_player(t_game *game)
 	game->player.right_rotate = false;
 }
 
+/*
+** Handles key press events for player movement and game control.
+** Updates the player's state flags for movement processing in the next frame.
+** Supports:
+**  - WASD keys for movement
+**  - Left/Right arrow keys for rotation
+**  - ESC key to exit the game
+** ----------------------------------------------------------------------------
+** @param keycode: The key code of the pressed key
+** @param player: Pointer to the player structure to update
+** @return: Always returns 0 (success)
+*/
+
 int	key_press(int keycode, t_player *player)
 {
 	if (keycode == ESC)
@@ -56,6 +78,15 @@ int	key_press(int keycode, t_player *player)
 	return (0);
 }
 
+/*
+** Handles key release events for player movement.
+** Resets the player's state flags when keys are released.
+** ----------------------------------------------------------------------------
+** @param keycode: The key code of the released key
+** @param player: Pointer to the player structure to update
+** @return: Always returns 0 (success)
+*/
+
 int	key_release(int keycode, t_player *player)
 {
 	if (keycode == W)
@@ -73,6 +104,19 @@ int	key_release(int keycode, t_player *player)
 	return (0);
 }
 
+/*
+** BONUS
+** Collision detection function that checks if a point touches a wall.
+** Converts pixel coordinates to map grid coordinates and checks:
+**  1. If the point is outside the map boundaries
+**  2. If the point is inside a wall cell ('1')
+** ----------------------------------------------------------------------------
+** @param px: X-coordinate of the point to check
+** @param py: Y-coordinate of the point to check
+** @param game: Game state containing the map information
+** @return: true if collision detected, false otherwise
+*/
+
 bool	touch(float px, float py, t_game *game)
 {
 	int	x;
@@ -86,6 +130,17 @@ bool	touch(float px, float py, t_game *game)
 		return (true);
 	return (false);
 }
+
+/*
+** Validates the field of view (FOV) setting and initializes
+** the game environment.
+** FOV must be between 45 and 90 degrees for proper rendering.
+** ----------------------------------------------------------------------------
+** @param game: Game state to initialize
+** @param choosed_texture: The texture set index to use
+** @param choosed_size_map: The map size option to use
+** @return: 0 on success, 1 on failure
+*/
 
 int	check_fov_and_init(t_game *game, int choosed_texture, int choosed_size_map)
 {
