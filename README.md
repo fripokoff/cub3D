@@ -1,10 +1,8 @@
 ## Compile and Run
 
-### For clone and compile mlx
-```bash
-make mlx
-```
-### For compile program 
+### Usage `./Cub3D [textures] [map_size]`
+
+### For compile program and mlx
 ```bash
 make
 ```
@@ -21,7 +19,15 @@ make
 
 ### Choose map
 - Cardinal map = 0
-- Wolf map = 1
+- minecraft map = 1
 ```bash
 ./cub3D 0
+```
+
+### Choose size of map
+- Very small = 0
+- Small = 1
+- Big = 2
+```bash
+./cub3D 0 1
 ```
