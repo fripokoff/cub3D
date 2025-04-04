@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 16:00:37 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 13:31:12 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ static void	select_wall_texture(float ray_coords[2], float angles[2],
 ** @param wall_height: Output parameter for the calculated wall height
 */
 
-static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
-	float *wall_height)
-{
-	*wall_height = (WALL_SIZE * HEIGHT) / dist;
-	*draw_start = -*wall_height / 2 + HEIGHT / 2;
-	if (*draw_start < 0)
-		*draw_start = 0;
-	*draw_end = *wall_height / 2 + HEIGHT / 2;
-	if (*draw_end >= HEIGHT)
-		*draw_end = HEIGHT - 1;
-}
+// static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
+// 	float *wall_height)
+// {
+// 	*wall_height = (WALL_SIZE * HEIGHT) / dist;
+// 	*draw_start = -*wall_height / 2 + HEIGHT / 2;
+// 	if (*draw_start < 0)
+// 		*draw_start = 0;
+// 	*draw_end = *wall_height / 2 + HEIGHT / 2;
+// 	if (*draw_end >= HEIGHT)
+// 		*draw_end = HEIGHT - 1;
+// }
 
 /*
 ** Renders a textured vertical stripe of a wall.
@@ -155,7 +155,12 @@ void	render_wall_column(t_player *player, t_game *game, float start_x, int i)
 	wall.screen_x = i;
 	select_wall_texture(ray_coords, angles,
 		hit_vertical, &wall);
-	compute_wall_dimensions(dist, &wall.draw_start, &wall.draw_end,
-		&wall.wall_height);
+	wall.wall_height = (WALL_SIZE * HEIGHT) / dist;
+	wall.draw_start = -wall.wall_height / 2 + HEIGHT / 2;
+	if (wall.draw_start < 0)
+	wall.draw_start = 0;
+	wall.draw_end = wall.wall_height / 2 + HEIGHT / 2;
+	if (wall.draw_end >= HEIGHT)
+		wall.draw_end = HEIGHT - 1;
 	render_textured_wall_column(game, &wall);
 }

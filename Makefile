@@ -1,52 +1,71 @@
 NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+
+SRC_PATH = src/
+SRC = main.c \
+	utils/clean.c \
+	utils/mlx_utils.c \
+	player/player.c \
+	player/movement.c \
+	ray/ray_casting.c \
+	ray/env_render.c \
+	ray/ray_utils.c \
+	ray/dda.c \
+	map/init.c
+
+SRCS = $(addprefix $(SRC_PATH), $(SRC))
+OBJ_PATH = obj/
 OBJ = $(SRC:.c=.o)
+OBJS = $(addprefix $(OBJ_PATH), $(OBJ))
 
-LFLAGS = -L./includes/mlx -lmlx -lXext -lX11 -lm -lz
-INCLUDES = includes/mlx/libmlx.a
-SRC = src/main.c \
-		src/utils/clean.c \
-		src/utils/mlx_utils.c \
-		src/player/player.c \
-		src/player/movement.c \
-		src/ray/ray_casting.c \
-		src/ray/env_render.c \
-		src/ray/ray_utils.c \
-		src/ray/dda.c \
-		src/map/init.c \
+# MLX
+MLX_PATH = includes/mlx/
+MLX_NAME = libmlx.a
+MLX = $(MLX_PATH)$(MLX_NAME)
 
-# Colors for messages
+# Flags
+LFLAGS = -L$(MLX_PATH) -lmlx -lXext -lX11 -lm -lz
+INC = -I./includes/
+
+# Colors
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
 RED = \033[0;31m
 BLUE = \033[0;34m
 NC = \033[0m
 
-all: $(NAME)
+all: $(OBJ_PATH) $(MLX) $(NAME)
 
-mlx:
-	@if [ ! -d "./includes/mlx" ]; then \
+$(OBJ_PATH):
+	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(OBJ_PATH)/utils
+	@mkdir -p $(OBJ_PATH)/player
+	@mkdir -p $(OBJ_PATH)/ray
+	@mkdir -p $(OBJ_PATH)/map
+
+$(MLX):
+	@if [ ! -d "$(MLX_PATH)" ]; then \
 		printf "$(BLUE)[MINILIBX]$(NC)\n"; \
 		printf "$(BLUE)⌛ Installing minilibx...$(NC)\n"; \
-		git clone -q https://github.com/42Paris/minilibx-linux.git ./includes/mlx && \
+		git clone -q https://github.com/42Paris/minilibx-linux.git $(MLX_PATH) && \
 		printf "  └$(BLUE)⚙️ Compiling minilibx...$(NC)\n"; \
-		make -C ./includes/mlx > /dev/null 2>&1 && \
+		make -C $(MLX_PATH) > /dev/null 2>&1 && \
 		printf "    └$(GREEN)✅ minilibx installed!$(NC)\n"; \
-	elif [ ! -f "./includes/mlx/libmlx.a" ]; then \
+	elif [ ! -f "$(MLX)" ]; then \
 		printf "$(BLUE)⚙️  Compiling minilibx...$(NC)\n"; \
-		make -C ./includes/mlx > /dev/null 2>&1 && \
+		make -C $(MLX_PATH) > /dev/null 2>&1 && \
 		printf "$(GREEN)✅ minilibx compiled!$(NC)\n"; \
 	fi
 
-%.o: %.c
-	@printf "\033[2K\r$(BLUE)⌛ Compilation:$<"
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	@printf "\033[2K\r$(BLUE)⌛ Compilation: $<$(NC)"
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-$(NAME): mlx $(OBJ)
+$(NAME): $(OBJS)
 	@printf "\n$(BLUE)[CUB3D]$(NC)\n"
 	@printf "  └$(BLUE)⚙️  Linking $(NAME)...$(NC)\n"
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(INCLUDES) $(LFLAGS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LFLAGS)
 	@printf "   └$(GREEN)✅ $(NAME) created!$(NC)\n"
 	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
 	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣾⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
@@ -68,10 +87,10 @@ $(NAME): mlx $(OBJ)
 
 clean:
 	@printf "\n🗑️  Removing object files...\n"
-	@rm -rf $(OBJ)
-	@if [ -d "./includes/mlx" ]; then \
+	@rm -rf $(OBJ_PATH)
+	@if [ -d "$(MLX_PATH)" ]; then \
 		printf "$(YELLOW)🧹 Cleaning mlx$(NC)\n"; \
-		make clean -C includes/mlx > /dev/null 2>&1; \
+		make clean -C $(MLX_PATH) > /dev/null 2>&1; \
 		printf "  └$(GREEN)✅ mlx cleaned!$(NC)\n"; \
 	fi
 	@printf "$(GREEN)✅ Cleaning completed!$(NC)\n\n"
@@ -79,18 +98,18 @@ clean:
 norm:
 	@printf "$(BLUE)📋 Checking norm...$(NC)\n"
 	@norminette includes/cub3d.h
-	@norminette src/*
+	@norminette $(SRC_PATH)
 	@printf "$(GREEN)✅ Check completed!$(NC)\n"
 
 fclean: clean
 	@printf "🗑️  Removing the executable $(NAME)...\n"
 	@rm -rf $(NAME)
-	@printf "  └$(GREEN)✅ Exectuabe removed!$(NC)\n"
+	@printf "  └$(GREEN)✅ Executable removed!$(NC)\n"
 	@printf "\n🗑️  Removing the mlx...\n"
-	@rm -rf ./includes/mlx
+	@rm -rf $(MLX_PATH)
 	@printf "  └$(GREEN)✅ mlx removed!$(NC)\n"
 	@printf "\n$(GREEN)✅ Full cleaning completed!$(NC)\n\n"
 
 re: fclean all
 
-.PHONY: all clean fclean re mlx
+.PHONY: all clean fclean re norm

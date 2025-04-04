@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 16:04:22 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 13:28:29 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int		key_press(int keycode, t_player *player);
 void	move_player(t_player *player);
 
 /* RENDER */
-int		load_texture(t_game *game, t_texture *texture, char *path);
 int		get_texture_pixel(t_texture *texture, int x, int y);
 int		render_game_frame(t_game *game);
 

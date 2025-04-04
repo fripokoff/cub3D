@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 15:41:02 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 13:28:24 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,27 @@ static int	init_mlx_components(t_game *game)
 			&game->size_line, &game->endian);
 	if (!game->data)
 		return (printf("Error: getting image data failed\n"), 1);
+	return (0);
+}
+
+
+/*
+** Loads a texture from an XPM file into the MLX image system.
+** ----------------------------------------------------------------------------
+** @param game: The game state containing MLX pointers
+** @param texture: Pointer to the texture structure to fill
+** @param path: Path to the XPM file to load
+** @return: 0 on success, 1 on failure
+*/
+
+static int	load_texture(t_game *game, t_texture *texture, char *path)
+{
+	texture->img = mlx_xpm_file_to_image(game->mlx, path,
+			&texture->width, &texture->height);
+	if (!texture->img)
+		return (1);
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel,
+			&texture->line_length, &texture->endian);
 	return (0);
 }
 
