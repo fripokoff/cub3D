@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:27:26 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/04 13:28:24 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 15:33:13 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,29 +254,32 @@ static int	load_texture(t_game *game, t_texture *texture, char *path)
 	return (0);
 }
 
-static int	load_cardinal_textures(t_game *game)
+static void	build_texture_path(char *dest, const char *type, const char *direction)
 {
-	if (load_texture(game, &game->map.textures[TEX_NORTH], "textures/cardinal/NO.xpm")
-		|| load_texture(game, &game->map.textures[TEX_SOUTH], "textures/cardinal/SO.xpm")
-		|| load_texture(game, &game->map.textures[TEX_EAST], "textures/cardinal/EA.xpm")
-		|| load_texture(game, &game->map.textures[TEX_WEST], "textures/cardinal/WE.xpm"))
-	{
-		printf("Error: loading cardinal textures failed\n");
-		return (1);
-	}
-	return (0);
+	strcpy(dest, "textures/");
+	strcat(dest, type);
+	strcat(dest, "/");
+	strcat(dest, direction);
+	strcat(dest, ".xpm");
 }
 
-static int	load_wolf_textures(t_game *game)
+static int	load_textures(t_game *game, char *type)
 {
-	if (load_texture(game, &game->map.textures[TEX_NORTH], "textures/minecraft/north.xpm")
-		|| load_texture(game, &game->map.textures[TEX_SOUTH], "textures/minecraft/south.xpm")
-		|| load_texture(game, &game->map.textures[TEX_EAST],
-			"textures/minecraft/east.xpm")
-		|| load_texture(game, &game->map.textures[TEX_WEST],
-			"textures/minecraft/west.xpm"))
+	char	north_path[100];
+	char	south_path[100];
+	char	east_path[100];
+	char	west_path[100];
+
+	build_texture_path(north_path, type, "NO");
+	build_texture_path(south_path, type, "SO");
+	build_texture_path(east_path, type, "EA");
+	build_texture_path(west_path, type, "WE");
+	if (load_texture(game, &game->map.textures[TEX_NORTH], north_path)
+		|| load_texture(game, &game->map.textures[TEX_SOUTH], south_path)
+		|| load_texture(game, &game->map.textures[TEX_EAST], east_path)
+		|| load_texture(game, &game->map.textures[TEX_WEST], west_path))
 	{
-		printf("Error: loading wolf textures failed\n");
+		printf("Error: loading %s textures failed\n", type);
 		return (1);
 	}
 	return (0);
@@ -298,12 +301,12 @@ int	setup_game_environment(t_game *game, int choosed_texture, int choosed_size_m
 	game->map.ceiling_color[2] = 0;
 	if (choosed_texture == 0)
 	{
-		if (load_wolf_textures(game))
+		if (load_textures(game, "minecraft"))
 			return (1);
 	}
 	else if (choosed_texture == 1)
 	{
-		if (load_cardinal_textures(game))
+		if (load_textures(game, "cardinal"))
 			return (1);
 	}
 	game->player.game = game;

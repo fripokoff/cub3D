@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/04 13:28:29 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 14:34:07 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,34 +126,33 @@ typedef struct s_wall_column
 /* INIT */
 int		setup_game_environment(t_game *game, int choosed_texture,
 			int choosed_size_map);
+int		check_fov_and_init(t_game *game, int choosed_texture,
+			int choosed_size_map);
 
 /* PLAYER & MOVEMENTS */
 void	init_player(t_game *player);
-int		check_fov_and_init(t_game *game, int choosed_texture,
-			int choosed_size_map);
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
 void	move_player(t_player *player);
 
 /* RENDER */
-int		get_texture_pixel(t_texture *texture, int x, int y);
 int		render_game_frame(t_game *game);
 
 /* RAY */
 void	render_wall_column(t_player *player, t_game *game,
 			float start_x, int i);
+
+/* DDA*/
 int		cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 			float *ray_coords);
 
-/* UTILS & MLX UTILS */
+/* MLX UTILS */
 int		exit_game(t_game *game);
 int		setup_hooks(t_game *game);
 void	put_pixel(int x, int y, int color, t_game *game);
-void	clear_image(t_game *game);
 
-/* UTILS */
-int		rgb_to_int(int r, int g, int b);
+/* CLEAN */
 void	free_map(char **map);
-double	get_delta_time(void);
+void	clear_image(t_game *game);
 
 #endif

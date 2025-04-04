@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/04 13:31:12 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 14:30:04 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,25 @@ static void	select_wall_texture(float ray_coords[2], float angles[2],
 }
 
 /*
-** Calculates the dimensions of the wall to be rendered on screen.
-** Adjusts the wall height based on the distance from the player (perspective).
+** Retrieves a pixel color from a texture at given coordinates.
+** Handles boundary checking to prevent out-of-bounds access.
 ** ----------------------------------------------------------------------------
-** @param dist: Distance to the wall
-** @param draw_start: Output parameter for the starting Y coordinate
-** @param draw_end: Output parameter for the ending Y coordinate
-** @param wall_height: Output parameter for the calculated wall height
+** @param texture: The texture to get the pixel from
+** @param x: X coordinate in the texture
+** @param y: Y coordinate in the texture
+** @return: The color value at the specified coordinates
 */
 
-// static void	compute_wall_dimensions(float dist, int *draw_start, int *draw_end,
-// 	float *wall_height)
-// {
-// 	*wall_height = (WALL_SIZE * HEIGHT) / dist;
-// 	*draw_start = -*wall_height / 2 + HEIGHT / 2;
-// 	if (*draw_start < 0)
-// 		*draw_start = 0;
-// 	*draw_end = *wall_height / 2 + HEIGHT / 2;
-// 	if (*draw_end >= HEIGHT)
-// 		*draw_end = HEIGHT - 1;
-// }
+static int	get_texture_pixel(t_texture *texture, int x, int y)
+{
+	char	*pixel;
+
+	if (x < 0 || x >= texture->width || y < 0 || y >= texture->height)
+		return (0);
+	pixel = texture->addr + (y * texture->line_length
+			+ x * (texture->bits_per_pixel / 8));
+	return (*(unsigned int *)pixel);
+}
 
 /*
 ** Renders a textured vertical stripe of a wall.
@@ -158,7 +157,7 @@ void	render_wall_column(t_player *player, t_game *game, float start_x, int i)
 	wall.wall_height = (WALL_SIZE * HEIGHT) / dist;
 	wall.draw_start = -wall.wall_height / 2 + HEIGHT / 2;
 	if (wall.draw_start < 0)
-	wall.draw_start = 0;
+		wall.draw_start = 0;
 	wall.draw_end = wall.wall_height / 2 + HEIGHT / 2;
 	if (wall.draw_end >= HEIGHT)
 		wall.draw_end = HEIGHT - 1;

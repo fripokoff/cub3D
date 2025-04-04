@@ -6,11 +6,37 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:03:13 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 15:52:03 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/04 14:30:43 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3d.h"
+
+static double	get_time(void)
+{
+	static double	last_time = 0.0;
+	static int		frame_count = 0;
+	double			frame_time;
+
+	frame_count++;
+	frame_time = 0.016667;
+	last_time = frame_count * frame_time;
+	return (last_time);
+}
+
+static double	get_delta_time(void)
+{
+	static double	last_time = 0.0;
+	double			current_time;
+	double			delta_time;
+
+	current_time = get_time();
+	delta_time = current_time - last_time;
+	last_time = current_time;
+	if (delta_time > 0.1)
+		delta_time = 0.1;
+	return (delta_time);
+}
 
 /*
 ** Handles player rotation based on keyboard input.

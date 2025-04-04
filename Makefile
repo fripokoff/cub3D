@@ -10,7 +10,6 @@ SRC = main.c \
 	player/movement.c \
 	ray/ray_casting.c \
 	ray/env_render.c \
-	ray/ray_utils.c \
 	ray/dda.c \
 	map/init.c
 
@@ -105,9 +104,6 @@ fclean: clean
 	@printf "🗑️  Removing the executable $(NAME)...\n"
 	@rm -rf $(NAME)
 	@printf "  └$(GREEN)✅ Executable removed!$(NC)\n"
-	@printf "\n🗑️  Removing the mlx...\n"
-	@rm -rf $(MLX_PATH)
-	@printf "  └$(GREEN)✅ mlx removed!$(NC)\n"
 	@printf "\n$(GREEN)✅ Full cleaning completed!$(NC)\n\n"
 
 re: fclean all
