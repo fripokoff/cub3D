@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 10:22:35 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 15:41:33 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 16:00:37 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,34 @@ static void	render_textured_wall_column(t_game *game, t_wall_column *wall)
 		put_pixel(wall->screen_x, y, color, game);
 		y++;
 	}
+}
+
+/*
+** Calculates corrected distance to prevent fish-eye effect.
+** Applies the cosine correction based on the angle,
+** between ray and player direction.
+** ----------------------------------------------------------------------------
+** @param player: Player data (position, direction)
+** @param ray: Coordinates of the ray hit
+** @return: The corrected distance value
+*/
+
+static float	fixed_dist(t_player *player, float ray[2])
+{
+	float	delta_x;
+	float	delta_y;
+	float	angle_diff;
+	float	dist;
+
+	delta_x = ray[0] - player->x;
+	delta_y = ray[1] - player->y;
+	angle_diff = atan2(delta_y, delta_x) - player->angle;
+	while (angle_diff < -PI)
+		angle_diff += 2 * PI;
+	while (angle_diff > PI)
+		angle_diff -= 2 * PI;
+	dist = sqrt(delta_x * delta_x + delta_y * delta_y) * cos(angle_diff);
+	return (dist);
 }
 
 /*

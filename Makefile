@@ -1,4 +1,4 @@
-NAME = cub3D 
+NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 OBJ = $(SRC:.c=.o)
@@ -16,31 +16,82 @@ SRC = src/main.c \
 		src/ray/dda.c \
 		src/map/init.c \
 
-all: mlx $(NAME)
+# Colors for messages
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+RED = \033[0;31m
+BLUE = \033[0;34m
+NC = \033[0m
+
+all: 
+	@make mlx $(NAME) --no-print-directory
+	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
+	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⣾⣿⣿⣷⣦⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
+	@printf "⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠀\n"
+	@printf "⠀⠀⠀⠰⢾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡷⠆⠀⠀⠀\n"
+	@printf "⠀⠀⢸⣷⣦⣈⠙⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠋⣁⣴⣾⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣷⣦⣄⣉⠛⠻⢿⣿⣿⡿⠟⠛⣉⣠⣴⣾⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⡌⢡⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀\n"
+	@printf "⠀⠀⠘⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠃⠀⠀\n"
+	@printf "⠀⠀⠀⠀⠀⠉⠛⠿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠀\n"
+	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠛⠿⣿⡇⢸⣿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
+	@printf "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n"
+	@printf "$(RED)C U B E 3 D  C O M P I L E D$(NC)\n"
+	@printf "    @the01rch 🤝 @fripok\n"
 
 mlx:
 	@if [ ! -d "./includes/mlx" ]; then \
-		git clone https://github.com/42Paris/minilibx-linux.git ./includes/mlx && \
-		make -C ./includes/mlx; \
+		printf "$(BLUE)[MINILIBX]$(NC)\n"; \
+		printf "$(BLUE)⌛ Installing minilibx...$(NC)\n"; \
+		git clone -q https://github.com/42Paris/minilibx-linux.git ./includes/mlx && \
+		printf "  └$(BLUE)⚙️ Compiling minilibx...$(NC)\n"; \
+		make -C ./includes/mlx > /dev/null 2>&1 && \
+		printf "    └$(GREEN)✅ minilibx installed!$(NC)\n"; \
 	elif [ ! -f "./includes/mlx/libmlx.a" ]; then \
-		make -C ./includes/mlx; \
+		printf "$(BLUE)⚙️  Compiling minilibx...$(NC)\n"; \
+		make -C ./includes/mlx > /dev/null 2>&1 && \
+		printf "$(GREEN)✅ minilibx compiled!$(NC)\n"; \
 	fi
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(SRC) -o $(NAME) $(INCLUDES) $(LFLAGS)
+%.o: %.c
+	@printf "\033[2K\r$(BLUE)⌛ Compilation:$<"
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME): 
+	@printf "\n$(BLUE)[CUB3D]$(NC)\n"
+	@make $(OBJ) --no-print-directory
+	@printf "\n  └$(BLUE)⚙️  Linking $(NAME)...$(NC)\n"
+	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(INCLUDES) $(LFLAGS)
+	@printf "   └$(GREEN)✅ $(NAME) created!$(NC)\n"
 
 clean:
-	rm -rf $(OBJ)
+	@printf "\n🗑️  Removing object files...\n"
+	@rm -rf $(OBJ)
 	@if [ -d "./includes/mlx" ]; then \
-		make clean -C includes/mlx; \
+		printf "$(YELLOW)🧹 Cleaning mlx$(NC)\n"; \
+		make clean -C includes/mlx > /dev/null 2>&1; \
+		printf "  └$(GREEN)✅ mlx cleaned!$(NC)\n"; \
 	fi
+	@printf "$(GREEN)✅ Cleaning completed!$(NC)\n\n"
 
 norm:
-	norminette includes/cub3d.h
-	norminette src/*
+	@printf "$(BLUE)📋 Checking norm...$(NC)\n"
+	@norminette includes/cub3d.h
+	@norminette src/*
+	@printf "$(GREEN)✅ Check completed!$(NC)\n"
 
 fclean: clean
-	rm -rf $(NAME)
+	@printf "🗑️  Removing the executable $(NAME)...\n"
+	@rm -rf $(NAME)
+	@printf "  └$(GREEN)✅ Exectuabe removed!$(NC)\n"
+	@printf "\n🗑️  Removing the mlx...\n"
+	@rm -rf ./includes/mlx
+	@printf "  └$(GREEN)✅ mlx removed!$(NC)\n"
+	@printf "\n$(GREEN)✅ Full cleaning completed!$(NC)\n\n"
 
 re: fclean all
 

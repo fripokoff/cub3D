@@ -6,7 +6,7 @@
 /*   By: fripok <fripok@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:43:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/04/03 15:55:23 by fripok           ###   ########.fr       */
+/*   Updated: 2025/04/03 16:04:22 by fripok           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ int		check_fov_and_init(t_game *game, int choosed_texture,
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
 void	move_player(t_player *player);
-int		focus_out(t_player *player);
 
 /* RENDER */
 int		load_texture(t_game *game, t_texture *texture, char *path);
@@ -142,19 +141,20 @@ int		get_texture_pixel(t_texture *texture, int x, int y);
 int		render_game_frame(t_game *game);
 
 /* RAY */
-double	get_delta_time(void);
-float	fixed_dist(t_player *player, float ray[2]);
 void	render_wall_column(t_player *player, t_game *game,
 			float start_x, int i);
 int		cast_ray_to_wall(t_player *player, t_game *game, float *angles,
 			float *ray_coords);
 
 /* UTILS & MLX UTILS */
+int		exit_game(t_game *game);
 int		setup_hooks(t_game *game);
 void	put_pixel(int x, int y, int color, t_game *game);
 void	clear_image(t_game *game);
+
+/* UTILS */
 int		rgb_to_int(int r, int g, int b);
-int		exit_game(t_game *game);
 void	free_map(char **map);
+double	get_delta_time(void);
 
 #endif
